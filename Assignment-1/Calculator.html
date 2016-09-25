@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>CSC436 Assignment - Calculator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="Calculator.css" />
+
+    <script lang="javascript">
+        //Local variables
+        var oldValue = "", 
+            newValue = "", 
+            operator = "";
+    
+        //clears the value in variables and resets the calculator
+        function clearText() {
+            oldValue = "";
+            newValue = "";
+            operator = "";            
+            document.getElementById("display").value = "0";
+        }
+
+        //checks parameter type and assigns values to variables and display in textbox
+        function setValue(param) {
+            if (isNumber(param)) {
+                if (operator.length == 0 ) {
+                    oldValue = oldValue + "" + param;
+                    document.getElementById("display").value = oldValue;
+                    return;
+                }
+                else  {
+                    newValue = newValue + "" + param;
+                    document.getElementById("display").value = oldValue + ' ' + operator + ' ' + newValue;
+                    return;
+                }
+            }
+
+            if (isOperator(param)) {
+                if (oldValue.length == 0) {
+                    oldValue = 0; //default old value to 0 if operator is pressed first
+                }
+
+                operator = param;
+                document.getElementById("display").value = oldValue + ' ' + operator;
+            }
+        }
+        
+        //calculates result depending on operator
+        function calculate() {
+            if (oldValue.length == 0 || newValue.length == 0 || operator.length == 0) {
+                return "";
+            }
+
+            switch (operator) {
+                case '+':
+                    oldValue = parseInt(oldValue) + parseInt(newValue); //javascript concatenates string with + sign. hence convert to integer before addition
+                    break;
+                case '-':
+                    oldValue -= newValue;
+                    break;
+                case '/':
+                    oldValue /= newValue;
+                    break;
+                case 'x':
+                    oldValue *= newValue;
+                    break;
+            }
+
+            operator = "";
+            newValue = "";
+            document.getElementById("display").value = oldValue;
+        }
+
+        //returns true if the value passed is a number
+        function isNumber(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        }
+
+        //returns true if the value passed is a operator
+        function isOperator(o) {
+            switch (o) {
+                case '+':
+                case '-':
+                case '/':
+                case 'x':
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <p class="navbar-brand">CSC436 Fall 2016 - Assignment 1</p>
+            </div>
+        </div>
+    </nav>
+    <form name="calculator">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <label>Calculator</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <input type="text" id="display" name="display" class="form-control display" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue(7);">7</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue(8);">8</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue(9);">9</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue('/');">/</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue(4);">4</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue(5);">5</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue(6);">6</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue('x');">x</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue(1);">1</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue(2);">2</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue(3);">3</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue('-');">-</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-default btn-lg btn-block" onclick="clearText();">C</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue(0);">0</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-default btn-lg btn-block" onclick="calculate();">=</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-lg btn-block" onclick="setValue('+');">+</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-4"></div>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
