@@ -1,6 +1,15 @@
 import { Component } from '@angular/core';
 @Component({
-  selector: 'my-app',
-  template: '<h1>My First Angular App</h1>'
+  selector: 'calculator',
+  template: '<h1>{{title}}</h1><h2>{{hero}} details!</h2>'
 })
-export class AppComponent { }
+
+export class CalculatorComponent {
+  title = 'Tour of Heroes';
+  hero = 'Windstorm';  
+ }
+
+export class Hero {
+  id: number;
+  name: string;
+}
