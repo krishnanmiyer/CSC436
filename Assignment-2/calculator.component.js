@@ -9,21 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var platform_browser_1 = require('@angular/platform-browser');
-var forms_1 = require('@angular/forms');
-var calculator_component_1 = require('./calculator.component');
-var AppModule = (function () {
-    function AppModule() {
+var Hero = (function () {
+    function Hero() {
     }
-    AppModule = __decorate([
-        core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
-            declarations: [calculator_component_1.CalculatorComponent],
-            bootstrap: [calculator_component_1.CalculatorComponent]
+    return Hero;
+}());
+exports.Hero = Hero;
+var CalculatorComponent = (function () {
+    function CalculatorComponent() {
+        this.title = 'Tour of Heroes';
+        this.hero = {
+            id: 1,
+            name: 'Windstorm'
+        };
+    }
+    CalculatorComponent = __decorate([
+        core_1.Component({
+            selector: 'calculator',
+            template: "\n    <h1>{{title}}</h1>\n    <h2>{{hero.name}} details!</h2>\n    <div><label>id: </label>{{hero.id}}</div>\n    <div>\n      <label>name: </label>\n      <input [(ngModel)]=\"hero.name\" placeholder=\"name\">\n    </div>\n    ",
+            styleUrls: ['/calculator.component.css']
         }), 
         __metadata('design:paramtypes', [])
-    ], AppModule);
-    return AppModule;
+    ], CalculatorComponent);
+    return CalculatorComponent;
 }());
-exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+exports.CalculatorComponent = CalculatorComponent;
+//# sourceMappingURL=calculator.component.js.map

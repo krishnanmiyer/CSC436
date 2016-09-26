@@ -1,0 +1,96 @@
+<h1>{{title}}</h1>
+<h2>{{hero.name}} details!</h2>
+<div><label>id: </label>{{hero.id}}</div>
+<div>
+    <label>name: </label>
+    <input [(ngModel)]="hero.name" placeholder="name">
+</div>
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <p class="navbar-brand">CSC436 Fall 2016 - Assignment 2</p>
+        </div>
+    </div>
+</nav>
+<form name="calculator">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td colspan="4">
+                                <label>Calculator</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <input type="text" id="display" name="display" class="form-control display" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" (click)="clicked($event)" class="btn btn-default btn-lg btn-block">7</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">8</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">9</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">/</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">4</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">5</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">6</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">x</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">1</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">2</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">3</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">-</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-default btn-lg btn-block">C</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">0</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-default btn-lg btn-block">=</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-lg btn-block">+</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+    </div>
+</form>

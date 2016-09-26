@@ -9,25 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var MathValue = (function () {
+    function MathValue() {
+    }
+    return MathValue;
+}());
+exports.MathValue = MathValue;
 var CalculatorComponent = (function () {
     function CalculatorComponent() {
-        this.title = 'Tour of Heroes';
-        this.hero = 'Windstorm';
     }
+    CalculatorComponent.prototype.clicked = function (event) {
+        console.log(event.srcElement.attributes.type == 'button');
+        if (event.srcElement.attributes.type == 'button') {
+            console.log("button clicked");
+        }
+    };
     CalculatorComponent = __decorate([
         core_1.Component({
             selector: 'calculator',
-            template: '<h1>{{title}}</h1><h2>{{hero}} details!</h2>'
+            templateUrl: 'app/calculator.component.html',
+            styleUrls: ['app/calculator.component.css']
         }), 
         __metadata('design:paramtypes', [])
     ], CalculatorComponent);
     return CalculatorComponent;
 }());
 exports.CalculatorComponent = CalculatorComponent;
-var Hero = (function () {
-    function Hero() {
-    }
-    return Hero;
-}());
-exports.Hero = Hero;
-//# sourceMappingURL=app.component.js.map
+//# sourceMappingURL=calculator.component.js.map
