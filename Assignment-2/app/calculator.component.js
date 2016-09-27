@@ -12,30 +12,33 @@ var core_1 = require('@angular/core');
 var CalculatorComponent = (function () {
     function CalculatorComponent() {
     }
+    CalculatorComponent.prototype.doWork = function (v) {
+        if (this.calculator == undefined) {
+            this.calculator = new Calculator();
+        }
+        if (this.isNumber(v)) {
+            this.calculator.setValue(v);
+        }
+        else if (this.isOperator(v)) {
+            this.calculator.setOperator(v);
+            if (v == '=') {
+                this.display = String(this.calculator.calculate());
+            }
+        }
+        else {
+            this.calculator.clear();
+        }
+        this.display = this.calculator.toString();
+    };
     CalculatorComponent.prototype.clicked = function (event) {
         if (event.target.type == 'button') {
-            if (this.calculator == undefined) {
-                this.calculator = new Calculator();
-            }
-            var v = event.target.innerText;
-            if (this.isNumber(v)) {
-                this.calculator.setValue(v);
-            }
-            else if (this.isOperator(v)) {
-                this.calculator.setOperator(v);
-            }
-            else if (v == '=') {
-                this.display = String(this.calculator.calculate());
-                return;
-            }
-            else {
-                this.calculator.clear();
-            }
-            this.display = this.calculator.toString();
+            this.doWork(event.target.innerText);
         }
     };
-    CalculatorComponent.prototype.onKey = function (event) {
-        console.log("---->" + event.target.value);
+    CalculatorComponent.prototype.keyUp = function (event) {
+        if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 111) || event.keyCode == 27 || event.keyCode == 13) {
+            this.doWork(String.fromCharCode(event.which));
+        }
     };
     CalculatorComponent.prototype.isNumber = function (n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
@@ -46,6 +49,7 @@ var CalculatorComponent = (function () {
             case '-':
             case '/':
             case 'x':
+            case "=":
                 return true;
             default:
                 return false;
@@ -68,32 +72,22 @@ var Calculator = (function () {
         this._newValue = undefined;
         this._operator = "";
     }
-    Calculator.prototype.toString = function () {
-        if (this._operator.length == 0) {
-            return String(this._oldValue);
-        }
-        else if (this._operator.length > 0 && this._newValue == undefined) {
-            return this._oldValue + ' ' + this._operator;
-        }
-        else {
-            return this._oldValue + ' ' + this._operator + ' ' + this._newValue;
-        }
-    };
-    Calculator.prototype.clear = function () {
-        this._oldValue = undefined;
-        this._newValue = undefined;
-        this._operator = "";
-        this.setValue(0);
-    };
     Calculator.prototype.setValue = function (v) {
         if (this._operator.length == 0) {
             this._oldValue = (this._oldValue == undefined || this._oldValue == 0) ? v : this._oldValue + v;
+        }
+        else if (this._operator == "=") {
+            this._oldValue = v;
+            this._operator = "";
         }
         else {
             this._newValue = (this._newValue == undefined || this._newValue == 0) ? v : this._newValue + v;
         }
     };
     Calculator.prototype.setOperator = function (v) {
+        if (this._oldValue != undefined && this._newValue != undefined && (this._operator != "=" || this._operator != "")) {
+            this.calculate();
+        }
         this._operator = v;
     };
     Calculator.prototype.calculate = function () {
@@ -117,6 +111,25 @@ var Calculator = (function () {
         this._newValue = undefined;
         this._operator = "";
         return this._oldValue;
+    };
+    Calculator.prototype.toString = function () {
+        if (this._operator.length == 0 || this._operator == "=") {
+            return String(this._oldValue);
+        }
+        else if (this._operator.length > 0 && this._newValue == undefined) {
+            if (this._oldValue == undefined)
+                this._oldValue = 0;
+            return this._oldValue + ' ' + this._operator;
+        }
+        else {
+            return this._oldValue + ' ' + this._operator + ' ' + this._newValue;
+        }
+    };
+    Calculator.prototype.clear = function () {
+        this._oldValue = undefined;
+        this._newValue = undefined;
+        this._operator = "";
+        this.setValue(0);
     };
     return Calculator;
 }());
