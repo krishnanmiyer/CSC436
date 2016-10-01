@@ -13,19 +13,32 @@ var CalculatorComponent = (function () {
     function CalculatorComponent() {
     }
     CalculatorComponent.prototype.doWork = function (v) {
+        //substitue uncommon keys 
+        switch (v) {
+            case 'Escape':
+            case 'Esc':
+            case 'c':
+                v = 'C';
+                break;
+            case 'Enter':
+                v = '=';
+                break;
+        }
+        //instantiate Calculator class ONLY if not done before
         if (this.calculator == undefined) {
             this.calculator = new Calculator();
         }
-        if (this.isNumber(v)) {
+        //evalulate input and perform operations
+        if (this.evalNumber(v)) {
             this.calculator.setValue(v);
         }
-        else if (this.isOperator(v)) {
+        else if (this.evalOperator(v)) {
             this.calculator.setOperator(v);
             if (v == '=') {
                 this.display = String(this.calculator.calculate());
             }
         }
-        else {
+        else if (v == 'C') {
             this.calculator.clear();
         }
         this.display = this.calculator.toString();
@@ -36,19 +49,17 @@ var CalculatorComponent = (function () {
         }
     };
     CalculatorComponent.prototype.keyUp = function (event) {
-        if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 111) || event.keyCode == 27 || event.keyCode == 13) {
-            this.doWork(String.fromCharCode(event.which));
-        }
+        this.doWork(event.key);
     };
-    CalculatorComponent.prototype.isNumber = function (n) {
+    CalculatorComponent.prototype.evalNumber = function (n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     };
-    CalculatorComponent.prototype.isOperator = function (o) {
+    CalculatorComponent.prototype.evalOperator = function (o) {
         switch (o) {
             case '+':
             case '-':
             case '/':
-            case 'x':
+            case '*':
             case "=":
                 return true;
             default:
@@ -57,6 +68,7 @@ var CalculatorComponent = (function () {
     };
     CalculatorComponent = __decorate([
         core_1.Component({
+            host: { '(window:keypress)': 'keyUp($event)' },
             selector: 'calculator',
             templateUrl: 'app/calculator.component.html',
             styleUrls: ['app/calculator.component.css']
@@ -68,67 +80,67 @@ var CalculatorComponent = (function () {
 exports.CalculatorComponent = CalculatorComponent;
 var Calculator = (function () {
     function Calculator() {
-        this._oldValue = undefined;
-        this._newValue = undefined;
-        this._operator = "";
+        this.oldValue = undefined;
+        this.newValue = undefined;
+        this.operator = "";
     }
     Calculator.prototype.setValue = function (v) {
-        if (this._operator.length == 0) {
-            this._oldValue = (this._oldValue == undefined || this._oldValue == 0) ? v : this._oldValue + v;
+        if (this.operator.length == 0) {
+            this.oldValue = (this.oldValue == undefined || this.oldValue == 0) ? v : this.oldValue + v;
         }
-        else if (this._operator == "=") {
-            this._oldValue = v;
-            this._operator = "";
+        else if (this.operator == "=") {
+            this.oldValue = v;
+            this.operator = "";
         }
         else {
-            this._newValue = (this._newValue == undefined || this._newValue == 0) ? v : this._newValue + v;
+            this.newValue = (this.newValue == undefined || this.newValue == 0) ? v : this.newValue + v;
         }
     };
     Calculator.prototype.setOperator = function (v) {
-        if (this._oldValue != undefined && this._newValue != undefined && (this._operator != "=" || this._operator != "")) {
+        if (this.oldValue != undefined && this.newValue != undefined && (this.operator != "=" || this.operator != "")) {
             this.calculate();
         }
-        this._operator = v;
+        this.operator = v;
     };
     Calculator.prototype.calculate = function () {
-        if (this._oldValue == undefined || this._newValue == undefined || this._operator.length == 0) {
+        if (this.oldValue == undefined || this.newValue == undefined || this.operator.length == 0) {
             return 0;
         }
-        switch (this._operator) {
+        switch (this.operator) {
             case '+':
-                this._oldValue = Number(this._oldValue) + Number(this._newValue);
+                this.oldValue = Number(this.oldValue) + Number(this.newValue);
                 break;
             case '-':
-                this._oldValue -= this._newValue;
+                this.oldValue -= this.newValue;
                 break;
             case '/':
-                this._oldValue /= this._newValue;
+                this.oldValue /= this.newValue;
                 break;
-            case 'x':
-                this._oldValue *= this._newValue;
+            case '*':
+                this.oldValue *= this.newValue;
                 break;
         }
-        this._newValue = undefined;
-        this._operator = "";
-        return this._oldValue;
+        this.newValue = undefined;
+        this.operator = "";
+        return this.oldValue;
     };
     Calculator.prototype.toString = function () {
-        if (this._operator.length == 0 || this._operator == "=") {
-            return String(this._oldValue);
+        if (this.operator.length == 0 || this.operator == "=") {
+            return String(this.oldValue);
         }
-        else if (this._operator.length > 0 && this._newValue == undefined) {
-            if (this._oldValue == undefined)
-                this._oldValue = 0;
-            return this._oldValue + ' ' + this._operator;
+        else if (this.operator.length > 0 && this.newValue == undefined) {
+            if (this.oldValue == undefined)
+                this.oldValue = 0;
+            return this.oldValue + ' ' + this.operator;
         }
         else {
-            return this._oldValue + ' ' + this._operator + ' ' + this._newValue;
+            return this.oldValue + ' ' + this.operator + ' ' + this.newValue;
         }
     };
     Calculator.prototype.clear = function () {
-        this._oldValue = undefined;
-        this._newValue = undefined;
-        this._operator = "";
+        this.oldValue = undefined;
+        this.newValue = undefined;
+        this.operator = "";
         this.setValue(0);
     };
     return Calculator;

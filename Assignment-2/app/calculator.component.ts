@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
+  host: { '(window:keypress)': 'keyUp($event)' },
   selector: 'calculator',
   templateUrl: 'app/calculator.component.html',
   styleUrls: ['app/calculator.component.css']
@@ -9,49 +10,61 @@ import { Component } from '@angular/core';
 export class CalculatorComponent {
   calculator: Calculator;
   display: string;
+  
+  private doWork(v: string): void {
+    //substitue uncommon keys 
+    switch (v) {
+      case 'Escape':
+      case 'Esc':
+      case 'c':
+        v = 'C';
+        break;
+      case 'Enter':
+        v = '=';
+        break;
+    }
 
-  private doWork(v: string) {
-      if (this.calculator == undefined) {
-        this.calculator = new Calculator();
-      }
+    //instantiate Calculator class ONLY if not done before
+    if (this.calculator == undefined) {
+      this.calculator = new Calculator();
+    }
 
-      if (this.isNumber(v)) {
-        this.calculator.setValue(v);
+    //evalulate input and perform operations
+    if (this.evalNumber(v)) {
+      this.calculator.setValue(v); 
+    }
+    else if (this.evalOperator(v)) {
+      this.calculator.setOperator(v);
+      if (v == '=') { // display only if the operator is equals (=)
+        this.display = String(this.calculator.calculate());
       }
-      else if (this.isOperator(v)) {
-        this.calculator.setOperator(v);
-        if (v == '=') {
-          this.display = String(this.calculator.calculate());
-        }
-      }
-      else {
-        this.calculator.clear();
-      }
-      this.display = this.calculator.toString();
+    }
+    else if (v == 'C') { //reset everything
+      this.calculator.clear();
+    }
+    this.display = this.calculator.toString();
   }
 
-  clicked(event) {
+  clicked(event) : void {
     if (event.target.type == 'button') {
       this.doWork(event.target.innerText);
     }
   }
 
-  keyUp(event: KeyboardEvent) {
-    if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 111) || event.keyCode == 27 || event.keyCode == 13) {
-      this.doWork(String.fromCharCode(event.which));
-    }
+  keyUp(event): void {
+    this.doWork(event.key);
   }
 
-  isNumber(n) {
+  evalNumber(n): boolean {
     return !isNaN(parseFloat(n)) && isFinite(n);
   }
 
-  isOperator(o) {
+  evalOperator(o) : boolean {
     switch (o) {
       case '+':
       case '-':
       case '/':
-      case 'x':
+      case '*':
       case "=":
         return true;
       default:
@@ -69,72 +82,72 @@ interface ICalculator {
 }
 
 export class Calculator implements ICalculator {
-  private _oldValue: number = undefined;
-  private _newValue: number = undefined;
-  private _operator: string = "";
+  private oldValue: number = undefined;
+  private newValue: number = undefined;
+  private operator: string = "";
 
-  setValue(v) {
-    if (this._operator.length == 0) {
-      this._oldValue = (this._oldValue == undefined || this._oldValue == 0) ? v : this._oldValue + v;
+  setValue(v) : void {
+    if (this.operator.length == 0) {
+      this.oldValue = (this.oldValue == undefined || this.oldValue == 0) ? v : this.oldValue + v;
     }
-    else if (this._operator == "=") {
-      this._oldValue = v;
-      this._operator = "";
+    else if (this.operator == "=") {
+      this.oldValue = v;
+      this.operator = "";
     }
     else {
-      this._newValue = (this._newValue == undefined || this._newValue == 0) ? v : this._newValue + v;
+      this.newValue = (this.newValue == undefined || this.newValue == 0) ? v : this.newValue + v;
     }
   }
 
-  setOperator(v) {
-    if (this._oldValue != undefined && this._newValue != undefined && (this._operator != "=" || this._operator != "")) {
+  setOperator(v): void {
+    if (this.oldValue != undefined && this.newValue != undefined && (this.operator != "=" || this.operator != "")) {
       this.calculate();
     }
-    this._operator = v;
+    this.operator = v;
   }
 
-  calculate() {
-    if (this._oldValue == undefined || this._newValue == undefined || this._operator.length == 0) {
+  calculate(): number {
+    if (this.oldValue == undefined || this.newValue == undefined || this.operator.length == 0) {
       return 0;
     }
 
-    switch (this._operator) {
+    switch (this.operator) {
       case '+':
-        this._oldValue = Number(this._oldValue) + Number(this._newValue);
+        this.oldValue = Number(this.oldValue) + Number(this.newValue);
         break;
       case '-':
-        this._oldValue -= this._newValue;
+        this.oldValue -= this.newValue;
         break;
       case '/':
-        this._oldValue /= this._newValue;
+        this.oldValue /= this.newValue;
         break;
-      case 'x':
-        this._oldValue *= this._newValue;
+      case '*':
+        this.oldValue *= this.newValue;
         break;
     }
-    this._newValue = undefined;
-    this._operator = "";
-    return this._oldValue;
+    this.newValue = undefined;
+    this.operator = "";
+    return this.oldValue;
   }
 
-  toString() {
-    if (this._operator.length == 0 || this._operator == "=") {
-      return String(this._oldValue);
+  toString(): string {
+    if (this.operator.length == 0 || this.operator == "=") {
+      return String(this.oldValue);
     }
-    else if (this._operator.length > 0 && this._newValue == undefined) {
-      if (this._oldValue == undefined) this._oldValue = 0;
+    else if (this.operator.length > 0 && this.newValue == undefined) {
+      if (this.oldValue == undefined) this.oldValue = 0;
 
-      return this._oldValue + ' ' + this._operator;
+      return this.oldValue + ' ' + this.operator;
     }
     else {
-      return this._oldValue + ' ' + this._operator + ' ' + this._newValue;
+      return this.oldValue + ' ' + this.operator + ' ' + this.newValue;
     }
   }
 
-  clear() {
-    this._oldValue = undefined;
-    this._newValue = undefined;
-    this._operator = "";
+  clear(): void {
+    this.oldValue = undefined;
+    this.newValue = undefined;
+    this.operator = "";
     this.setValue(0);
   }
 }
