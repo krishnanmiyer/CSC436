@@ -20,9 +20,15 @@ var UserDetailComponent = (function () {
             'gender': 'Male'
         }, { validator: CustomValidators.matchingAgeValidator('age', 'dob') });
     }
+    UserDetailComponent.prototype.onBlur = function (event) {
+        if (event.target.value != '') {
+            this.userDetailForm.patchValue({ name: event.target.value.trim() });
+            event.target.value = event.target.value.trim();
+        }
+    };
     UserDetailComponent.prototype.onSubmit = function (value) {
         this.submittedValues = value;
-        console.log(this.submittedValues);
+        //reset form    
         this.userDetailForm.reset({ 'gender': 'Male' });
     };
     UserDetailComponent = __decorate([
@@ -54,9 +60,9 @@ var CustomValidators = (function () {
             var dobVal = group.controls[dob].value;
             if (ageVal == '' && dobVal == '')
                 return null;
-            var today = new Date().getFullYear();
-            var yearDiff = Math.ceil(today - new Date(dobVal).getFullYear());
-            if (yearDiff != ageVal) {
+            var ageDifMs = Date.now() - new Date(dobVal).getTime();
+            var ageDate = new Date(ageDifMs);
+            if (Math.abs(ageDate.getUTCFullYear() - 1970) != ageVal) {
                 return {
                     invalid: true
                 };
