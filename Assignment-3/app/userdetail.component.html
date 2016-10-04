@@ -8,7 +8,8 @@
         <form [formGroup]="userDetailForm" (ngSubmit)="onSubmit(userDetailForm.value)" novalidate>
           <div class="form-group form-group-lg">
             <label for="userName">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Jane Doe" name="name" required [formControl]="userDetailForm.controls['name']" (blur) = "onBlur($event);"> 
+            <input type="text" class="form-control" id="name" placeholder="Jane Doe" name="name" required [formControl]="userDetailForm.controls['name']"
+              (blur)="onBlur($event);">
             <div class='alert alert-danger' *ngIf="userDetailForm.controls['name'].touched" [hidden]="userDetailForm.controls['name'].valid">
               <div *ngIf="userDetailForm.controls['name'].hasError('required')">Name is required</div>
               <div *ngIf="userDetailForm.controls['name'].hasError('invalid')">Name is not valid</div>
