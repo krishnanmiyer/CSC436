@@ -13,15 +13,17 @@ var forms_1 = require('@angular/forms');
 var UserDetailComponent = (function () {
     function UserDetailComponent(fb) {
         this.userDetailForm = fb.group({
-            'name': ['', forms_1.Validators.compose([forms_1.Validators.required, nameValidator])],
-            'age': ['', forms_1.Validators.compose([forms_1.Validators.required])],
-            'email': ['', forms_1.Validators.compose([forms_1.Validators.required])],
+            'name': ['', forms_1.Validators.compose([forms_1.Validators.required, CustomValidators.stringValidator])],
+            'email': ['', forms_1.Validators.compose([forms_1.Validators.required, CustomValidators.emailValidator])],
+            'age': ['', forms_1.Validators.compose([forms_1.Validators.required, CustomValidators.numberValidator])],
             'dob': ['', forms_1.Validators.compose([forms_1.Validators.required])],
             'gender': 'Male'
-        });
+        }, { validator: CustomValidators.matchingAgeValidator('age', 'dob') });
     }
     UserDetailComponent.prototype.onSubmit = function (value) {
-        console.log('form values: ', value);
+        this.submittedValues = value;
+        console.log(this.submittedValues);
+        this.userDetailForm.reset({ 'gender': 'Male' });
     };
     UserDetailComponent = __decorate([
         core_1.Component({
@@ -33,7 +35,35 @@ var UserDetailComponent = (function () {
     return UserDetailComponent;
 }());
 exports.UserDetailComponent = UserDetailComponent;
-function nameValidator(control) {
-    return control.touched && control.value.trim() == "" ? { "trailingSpace": true } : null;
-}
+var CustomValidators = (function () {
+    function CustomValidators() {
+    }
+    CustomValidators.stringValidator = function (control) {
+        return control.dirty && control.value != "" && control.value.trim() == "" ? { "invalid": true } : null;
+    };
+    CustomValidators.emailValidator = function (control) {
+        var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        return control.dirty && control.value != "" && !control.value.match(emailRegex) ? { "invalid": true } : null;
+    };
+    CustomValidators.numberValidator = function (control) {
+        return control.dirty && isNaN(control.value) || (Number(control.value) > 150 || Number(control.value) <= 0) ? { "invalid": true } : null;
+    };
+    CustomValidators.matchingAgeValidator = function (age, dob) {
+        return function (group) {
+            var ageVal = group.controls[age].value;
+            var dobVal = group.controls[dob].value;
+            if (ageVal == '' && dobVal == '')
+                return null;
+            var today = new Date().getFullYear();
+            var yearDiff = Math.ceil(today - new Date(dobVal).getFullYear());
+            if (yearDiff != ageVal) {
+                return {
+                    invalid: true
+                };
+            }
+        };
+    };
+    return CustomValidators;
+}());
+exports.CustomValidators = CustomValidators;
 //# sourceMappingURL=userdetail.component.js.map
