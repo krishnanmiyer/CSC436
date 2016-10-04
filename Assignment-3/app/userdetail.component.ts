@@ -20,24 +20,24 @@ export class UserDetailComponent {
     }, { validator: CustomValidators.matchingAgeValidator('age', 'dob') });
   }
 
-  onBlur(event:any): void{
+  onBlur(event: any): void {
     if (event.target.value != '') {
-      this.userDetailForm.patchValue({name: event.target.value.trim()});
+      this.userDetailForm.patchValue({ name: event.target.value.trim() });
       event.target.value = event.target.value.trim();
     }
   }
 
   onSubmit(value: any): void {
     this.submittedValues = value;
-    
+
     //reset form    
-    this.userDetailForm.reset({'gender':'Male'});
+    this.userDetailForm.reset({ 'gender': 'Male' });
   }
 }
 
 export class CustomValidators {
   static stringValidator(control: FormControl): { [s: string]: boolean } {
-    
+
     return control.dirty && control.value != "" && control.value.trim() == "" ? { "invalid": true } : null;
   }
 
@@ -54,8 +54,8 @@ export class CustomValidators {
     return (group: FormGroup): { [key: string]: any } => {
       let ageVal = group.controls[age].value;
       let dobVal = group.controls[dob].value;
-      
-      if (ageVal == '' &&  dobVal == '') return null;
+
+      if (ageVal == '' && dobVal == '') return null;
 
       let ageDifMs = Date.now() - new Date(dobVal).getTime();
       let ageDate = new Date(ageDifMs);
