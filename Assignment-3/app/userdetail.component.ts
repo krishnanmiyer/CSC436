@@ -1,29 +1,30 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup  } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl  } from '@angular/forms';
 
 @Component({
   selector: 'user-detail',
   templateUrl: 'app/userdetail.component.html'
 })
-export class UserDetailComponent { 
-  model: UserDetail;
 
-  constructor() {
-    this.model = new UserDetail();
-  }
+export class UserDetailComponent {
+  userDetailForm: FormGroup;
 
-  onSubmit(event:any) {
-    console.log(JSON.stringify(this.model));
+  constructor(fb: FormBuilder) {
+    this.userDetailForm = fb.group({
+      'name': ['', Validators.compose([Validators.required, nameValidator])] ,
+      'age': ['', Validators.compose([Validators.required])],
+      'email': ['', Validators.compose([Validators.required])],
+      'dob': ['', Validators.compose([Validators.required])],
+      'gender': 'Male'
+    });
+  }  
+
+  onSubmit(value: any): void {
+    console.log('form values: ', value);
+    
   }
 }
 
-export class UserDetail {
-  name: string;
-  email: string;
-  age: number;
-  dob: string;
-
-  constructor() {
-    this.dob = new Date().toISOString().slice(0,16);
-  }
+function nameValidator(control: FormControl): { [s: string]: boolean } {
+  return control.touched && control.value.trim() == ""  ? {"trailingSpace": true} : null; 
 }

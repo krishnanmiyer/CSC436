@@ -1,10 +1,10 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { UserDetailComponent }   from './userdetail.component';
-import { FormsModule }   from '@angular/forms';
+import { ReactiveFormsModule  }   from '@angular/forms';
 
 @NgModule({
-  imports:      [ BrowserModule, FormsModule ],
+  imports:      [ BrowserModule, ReactiveFormsModule ],
   declarations: [ UserDetailComponent ],
   bootstrap:    [ UserDetailComponent ]
 })

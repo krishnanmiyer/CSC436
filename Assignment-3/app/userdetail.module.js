@@ -17,7 +17,7 @@ var UserDetailModule = (function () {
     }
     UserDetailModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
+            imports: [platform_browser_1.BrowserModule, forms_1.ReactiveFormsModule],
             declarations: [userdetail_component_1.UserDetailComponent],
             bootstrap: [userdetail_component_1.UserDetailComponent]
         }), 

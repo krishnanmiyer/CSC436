@@ -5,40 +5,64 @@
   <div class="row">
     <div class="col-md-6 col-xs-6">
       <div class="jumbotron">
-        <form (ngSubmit)="onSubmit()">
+        <form [formGroup]="userDetailForm" (ngSubmit)="onSubmit(userDetailForm.value)">
           <div class="form-group form-group-lg">
             <label for="userName">Name</label>
-            <input type="text" class="form-control" id="userName" placeholder="Jane Doe" required >
+            <input type="text" class="form-control" id="name" placeholder="Jane Doe" name="name" required [formControl]="userDetailForm.controls['name']">
+            <div *ngIf="userDetailForm.controls['name'].hasError('trailingSpace')" class="alert alert-danger">Valid Name is required</div>
           </div>
           <div class="form-group form-group-lg">
             <label for="userEmail">Email address</label>
-            <input type="email" class="form-control" id="userEmail" placeholder="Email" required>
+            <input type="email" class="form-control" id="email" placeholder="Email" name="email" required [formControl]="userDetailForm.controls['email']">
           </div>
           <div class="form-group form-group-lg">
             <label for="userAge">Age</label>
-            <input type="number" class="form-control" id="userAge"  min="1" max="150" required>
+            <input type="number" class="form-control" id="age" min="1" max="150" name="age" required [formControl]="userDetailForm.controls['age']">
           </div>
           <div class="form-group form-group-lg">
             <label for="userDOB">Date of Birth</label>
-            <input type="date" class="form-control" id="userDOB" required> 
+            <input type="date" class="form-control" id="dob" name="dob" required [formControl]="userDetailForm.controls['dob']">
           </div>
           <div class="radio-inline">
             <label>
-              <input type="radio" name="gender" id="gender" value="Male" checked>
+              <input type="radio" name="gender" id="gender" value="Male" checked [formControl] = "userDetailForm.controls['gender']">
               Male
             </label>
           </div>
           <div class="radio-inline">
             <label>
-              <input type="radio" name="gender" id="gender" value="Female">
+              <input type="radio" name="gender" id="gender" value="Female" [formControl] = "userDetailForm.controls['gender']">
               Female
             </label>
           </div>
-          <p></p>          
-          <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+          <p></p>
+          <button type="submit" class="btn btn-primary btn-lg" [disabled]="!userDetailForm.valid">Submit</button>
         </form>
       </div>
     </div>
-    <div class="col-md-6 col-xs-6">.col-md-1</div>
+    <div class="col-md-6 col-xs-6">
+      <div class="jumbotron">
+              <!--<div class="row">
+          <div class="col-xs-3">Name</div>
+          <div class="col-xs-9  pull-left">{{ submittedData.name }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-3">Email</div>
+          <div class="col-xs-9 pull-left">{{ submittedData.email }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-3">Age</div>
+          <div class="col-xs-9 pull-left">{{ submittedData.age }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-3">Date of Birth</div>
+          <div class="col-xs-9 pull-left">{{ submittedData.dob }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-3">Gender</div>
+          <div class="col-xs-9 pull-left">{{ submittedData.gender }}</div>
+        </div>-->
+      </div>
+    </div>
   </div>
 </div>

@@ -9,28 +9,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var forms_1 = require('@angular/forms');
 var UserDetailComponent = (function () {
-    function UserDetailComponent() {
-        this.model = new UserDetail();
+    function UserDetailComponent(fb) {
+        this.userDetailForm = fb.group({
+            'name': ['', forms_1.Validators.compose([forms_1.Validators.required, nameValidator])],
+            'age': ['', forms_1.Validators.compose([forms_1.Validators.required])],
+            'email': ['', forms_1.Validators.compose([forms_1.Validators.required])],
+            'dob': ['', forms_1.Validators.compose([forms_1.Validators.required])],
+            'gender': 'Male'
+        });
     }
-    UserDetailComponent.prototype.onSubmit = function (event) {
-        console.log(JSON.stringify(this.model));
+    UserDetailComponent.prototype.onSubmit = function (value) {
+        console.log('form values: ', value);
     };
     UserDetailComponent = __decorate([
         core_1.Component({
             selector: 'user-detail',
             templateUrl: 'app/userdetail.component.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [forms_1.FormBuilder])
     ], UserDetailComponent);
     return UserDetailComponent;
 }());
 exports.UserDetailComponent = UserDetailComponent;
-var UserDetail = (function () {
-    function UserDetail() {
-        this.dob = new Date().toISOString().slice(0, 16);
-    }
-    return UserDetail;
-}());
-exports.UserDetail = UserDetail;
+function nameValidator(control) {
+    return control.touched && control.value.trim() == "" ? { "trailingSpace": true } : null;
+}
 //# sourceMappingURL=userdetail.component.js.map
