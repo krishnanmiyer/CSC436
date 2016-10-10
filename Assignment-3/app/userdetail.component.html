@@ -1,27 +1,42 @@
 <div class="page-header">
-  <h3>CSC 436 <small>User Details form</small></h3>
+  <h2>CSC 436 <small>Assignment 3 - User Details form</small></h2>
 </div>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6 col-xs-6">
       <div class="jumbotron">
-        <form [formGroup]="userDetailForm" (ngSubmit)="onSubmit(userDetailForm.value)">
+        <form [formGroup]="userDetailForm" (ngSubmit)="onSubmit(userDetailForm.value)" novalidate>
           <div class="form-group form-group-lg">
             <label for="userName">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Jane Doe" name="name" required [formControl]="userDetailForm.controls['name']">
-            <div *ngIf="userDetailForm.controls['name'].hasError('trailingSpace')" class="alert alert-danger">Valid Name is required</div>
+            <input type="text" class="form-control" id="name" placeholder="Jane Doe" name="name" required [formControl]="userDetailForm.controls['name']"
+              (blur)="onBlur($event);">
+            <div class='alert alert-danger' *ngIf="userDetailForm.controls['name'].touched" [hidden]="userDetailForm.controls['name'].valid">
+              <div *ngIf="userDetailForm.controls['name'].hasError('required')">Name is required</div>
+              <div *ngIf="userDetailForm.controls['name'].hasError('invalid')">Name is not valid</div>
+            </div>
           </div>
           <div class="form-group form-group-lg">
             <label for="userEmail">Email address</label>
             <input type="email" class="form-control" id="email" placeholder="Email" name="email" required [formControl]="userDetailForm.controls['email']">
+            <div class='alert alert-danger' *ngIf="userDetailForm.controls['email'].touched" [hidden]="userDetailForm.controls['email'].valid">
+              <div *ngIf="userDetailForm.controls['email'].hasError('required')">Email is required</div>
+              <div *ngIf="userDetailForm.controls['email'].hasError('invalid')">Email is not valid</div>
+            </div>
           </div>
           <div class="form-group form-group-lg">
             <label for="userAge">Age</label>
             <input type="number" class="form-control" id="age" min="1" max="150" name="age" required [formControl]="userDetailForm.controls['age']">
+            <div class='alert alert-danger' *ngIf="userDetailForm.controls['age'].touched" [hidden]="userDetailForm.controls['age'].valid">
+              <div *ngIf="userDetailForm.controls['age'].hasError('required')">Age is required</div>
+              <div *ngIf="userDetailForm.controls['age'].hasError('invalid')">Age is not valid</div>
+            </div>
           </div>
           <div class="form-group form-group-lg">
             <label for="userDOB">Date of Birth</label>
             <input type="date" class="form-control" id="dob" name="dob" required [formControl]="userDetailForm.controls['dob']">
+            <div class='alert alert-danger' *ngIf="userDetailForm.controls['dob'].touched && userDetailForm.hasError('invalid')">
+              Date of Birth does not match Age
+            </div>
           </div>
           <div class="radio-inline">
             <label>
@@ -42,27 +57,9 @@
     </div>
     <div class="col-md-6 col-xs-6">
       <div class="jumbotron">
-              <!--<div class="row">
-          <div class="col-xs-3">Name</div>
-          <div class="col-xs-9  pull-left">{{ submittedData.name }}</div>
+        <div [hidden]="!submittedValues">
+          <pre>{{submittedValues | json}}</pre>
         </div>
-        <div class="row">
-          <div class="col-xs-3">Email</div>
-          <div class="col-xs-9 pull-left">{{ submittedData.email }}</div>
-        </div>
-        <div class="row">
-          <div class="col-xs-3">Age</div>
-          <div class="col-xs-9 pull-left">{{ submittedData.age }}</div>
-        </div>
-        <div class="row">
-          <div class="col-xs-3">Date of Birth</div>
-          <div class="col-xs-9 pull-left">{{ submittedData.dob }}</div>
-        </div>
-        <div class="row">
-          <div class="col-xs-3">Gender</div>
-          <div class="col-xs-9 pull-left">{{ submittedData.gender }}</div>
-        </div>-->
       </div>
     </div>
   </div>
-</div>

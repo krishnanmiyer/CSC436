@@ -1,4 +1,0 @@
-name - > not empty, trim spaces
-age (> 0)
-date of birth (valid date) 
-compare age and date of birth
