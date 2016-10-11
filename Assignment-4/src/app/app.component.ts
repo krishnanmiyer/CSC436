@@ -1,5 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Pipe, PipeTransform  } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { StockmarketService } from './stockmarket.service';
+import { StockQuote } from './stockquote';
+import { LookupResult } from './symbolsearchresult';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject'
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctuntilchanged';
 
 @Component({
   selector: 'app-root',
@@ -7,38 +15,31 @@ import { OnInit } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 
-export class AppComponent implements OnInit{
-  title = 'My app works!';
+export class AppComponent {
+  items: any;
+  stockQuote: any;
+  symbol: string;
+  term$ = new Subject<string>();
 
-  ngOnInit() : void {
-
+  constructor(private service: StockmarketService) {
+    this.term$
+      .debounceTime(500)
+      .distinctUntilChanged()
+      .subscribe(term => this.search(term));
   }
 
-  makeRequest() : void {
+  search(term: string) {
+    if (term.length < 1) {
+      this.items.length = 0;
+      return;
+    }
+    this.service.getStockSymbol(term).subscribe(result => this.items = result);
+  }
 
+  quote(symbol: string) {
+    this.symbol = symbol;
+    this.items.length = 0;
+
+    this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(r => this.stockQuote = r);
   }
 }
-
-export class StockQuote {
-  Name: string;
-  Symbol: string;
-  LastPrice: number;
-  Change: number;
-  ChangePercent: number;
-  Timestamp: Date;
-  MSDate: number;
-  MarketCap: number;
-  Volume: number;
-  ChangeYTD: number;
-  ChangePercentYTD: number;
-  High: number;
-  Low: number;
-  Open: number
-}
-
-export class SymbolSearchResult {
-  Name: string;
-  Symbol: string;
-  Exchange: string
-}
-

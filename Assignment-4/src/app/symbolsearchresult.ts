@@ -1,4 +1,4 @@
-export class SymbolSearchResult {
+export class LookupResult {
   Name: string;
   Symbol: string;
   Exchange: string

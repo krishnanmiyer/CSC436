@@ -1,6 +1,51 @@
-<form>
-<h1>
-  {{title}}
-</h1>
-<input type="text" name="stockCode"><input type="submit" value="Get Quote">
-</form>
+<div class="page-header">
+  <h2>CSC 436 <small>Assignment 4 - Calling API Service from Angular2</small></h2>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4 col-xs-4">
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="stockSymbol">Try Stock Name or Symbol ("Apple" or "AAPL")</label>
+          <input (input)="term$.next($event.target.value)" class="form-control" id="stockSymbol" name="stockSymbol" value={{symbol}}>
+          <ul class="list-group" [hidden]="items == null || items.length < 1" id="stockList">
+            <li class="list-group-item" *ngFor="let item of items"><a href="#" (click)="quote(item.Symbol);">{{item.Name}} ({{item.Exchange}})</a></li>
+          </ul>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-8 col-xs-8">
+     <div *ngIf="stockQuote != null || stockQuote != undefined">
+        <h3>{{stockQuote.Name}} ({{stockQuote.Symbol}})</h3>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Last Price</th>
+                <th>Change</th>
+                <th>Change Percent</th>
+                <th>Change Percent YTD</th>
+                <th>Last Traded</th>
+                <th>High</th>
+                <th>Low</th>
+                <th>Open</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{stockQuote.LastPrice}}</td>
+                <td>{{stockQuote.Change}}</td>
+                <td>{{stockQuote.ChangePercent}}</td>
+                <td>{{stockQuote.ChangePercentYTD}}</td>
+                <td>{{stockQuote.Timestamp}}</td>
+                <td>{{stockQuote.High}}</td>
+                <td>{{stockQuote.Low}}</td>
+                <td>{{stockQuote.Open}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>    </div>
+  </div>
+</div>
