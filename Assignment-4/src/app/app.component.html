@@ -1,10 +1,11 @@
 <div class="page-header">
-  <h2>CSC 436 <small>Assignment 4 - Calling API Service from Angular2</small></h2>
+  <h2>CSC 436 <small>Assignment 4 - Calling API Service</small></h2>
 </div>
 
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-4 col-xs-4">
+      <br>
       <form class="form-inline">
         <div class="form-group">
           <label for="stockSymbol">Try Stock Name or Symbol ("Apple" or "AAPL")</label>
@@ -16,12 +17,12 @@
       </form>
     </div>
     <div class="col-md-8 col-xs-8">
-     <div *ngIf="stockQuote != null || stockQuote != undefined">
+      <div *ngIf="stockQuote != null || stockQuote != undefined">
         <h3>{{stockQuote.Name}} ({{stockQuote.Symbol}})</h3>
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
-              <tr>
+              <tr class="active">
                 <th>Last Price</th>
                 <th>Change</th>
                 <th>Change Percent</th>
@@ -34,18 +35,19 @@
             </thead>
             <tbody>
               <tr>
-                <td>{{stockQuote.LastPrice}}</td>
-                <td>{{stockQuote.Change}}</td>
-                <td>{{stockQuote.ChangePercent}}</td>
-                <td>{{stockQuote.ChangePercentYTD}}</td>
-                <td>{{stockQuote.Timestamp}}</td>
-                <td>{{stockQuote.High}}</td>
-                <td>{{stockQuote.Low}}</td>
-                <td>{{stockQuote.Open}}</td>
+                <td>{{stockQuote.LastPrice | currency:'USD':true:'1.2-2'}}</td>
+                <td>{{stockQuote.Change | currency:'USD':true:'1.2-2'}}</td>
+                <td>{{stockQuote.ChangePercent | number : '1.2-2'}}%</td>
+                <td>{{stockQuote.ChangePercentYTD |number : '1.2-2'}}%</td>
+                <td>{{stockQuote.Timestamp }}</td>
+                <td>{{stockQuote.High | currency:'USD':true:'1.2-2'}}</td>
+                <td>{{stockQuote.Low | currency:'USD':true:'1.2-2'}}</td>
+                <td>{{stockQuote.Open | currency:'USD':true:'1.2-2'}}</td>
               </tr>
             </tbody>
           </table>
         </div>
-      </div>    </div>
+      </div>
+    </div>
   </div>
 </div>
