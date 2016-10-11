@@ -1,8 +1,6 @@
-import { Component, Pipe, PipeTransform  } from '@angular/core';
+import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { StockmarketService } from './stockmarket.service';
-import { StockQuote } from './stockquote';
-import { LookupResult } from './symbolsearchresult';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject'
 import 'rxjs/add/operator/map';
@@ -10,7 +8,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctuntilchanged';
 
 @Component({
-  selector: 'app-root',
+  selector: 'stock-quote',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

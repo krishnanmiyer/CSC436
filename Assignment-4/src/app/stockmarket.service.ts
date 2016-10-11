@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Jsonp, URLSearchParams } from '@angular/http';
-import { StockQuote } from './stockquote';
-import { LookupResult } from './symbolsearchresult';
 import 'rxjs/add/operator/map';
 
 @Injectable()
