@@ -18,6 +18,7 @@ export class StockQuoteComponent {
   stockQuote: any;
   symbol: string;
   term$ = new Subject<string>();
+  chartData: any;
 
   constructor(private service: StockmarketService) {
     this.term$
@@ -39,5 +40,12 @@ export class StockQuoteComponent {
     this.items.length = 0;
 
     this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(r => this.stockQuote = r);
+
+    this.getChartData(symbol);
+  }
+
+  getChartData(symbol: string) {
+    this.service.getInteractiveChart(symbol).subscribe(r => this.chartData = r);
+    console.log(this.chartData);
   }
 }

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
+var stockChart_component_1 = require('./stockChart.component');
 var StockmarketService = (function () {
     function StockmarketService(jsonp) {
         this.jsonp = jsonp;
@@ -33,6 +34,20 @@ var StockmarketService = (function () {
         params.set('callback', 'JSONP_CALLBACK');
         return this.jsonp
             .get(stockQuoteUrl, { search: params })
+            .map(function (r) { return r.json(); });
+    };
+    StockmarketService.prototype.getInteractiveChart = function (symbol) {
+        var chartUrl = 'http://dev.markitondemand.com/Api/v2/InteractiveChart/jsonp';
+        var input = new stockChart_component_1.ChartDataInput();
+        input.Normalized = false;
+        input.NumberOfDays = 365;
+        input.DataPeriod = "Day";
+        input.Elements = [new stockChart_component_1.Element(symbol, "price", ["c"])];
+        var params = new http_1.URLSearchParams();
+        params.set('callback', 'JSONP_CALLBACK');
+        params.set('parameters', JSON.stringify(input));
+        return this.jsonp
+            .get(chartUrl, { search: params })
             .map(function (r) { return r.json(); });
     };
     StockmarketService = __decorate([

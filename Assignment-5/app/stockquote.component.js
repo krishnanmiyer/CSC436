@@ -37,6 +37,12 @@ var StockQuoteComponent = (function () {
         this.symbol = symbol;
         this.items.length = 0;
         this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(function (r) { return _this.stockQuote = r; });
+        this.getChartData(symbol);
+    };
+    StockQuoteComponent.prototype.getChartData = function (symbol) {
+        var _this = this;
+        this.service.getInteractiveChart(symbol).subscribe(function (r) { return _this.chartData = r; });
+        console.log(this.chartData);
     };
     StockQuoteComponent = __decorate([
         core_1.Component({

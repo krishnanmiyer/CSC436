@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Jsonp, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from './stockChart.component';
 
 @Injectable()
 export class StockmarketService {
   constructor(private jsonp: Jsonp) { }
 
   getStockSymbol(term: string) {
-    let stockSymbolUrl = 'http://dev.markitondemand.com/Api/v2/Lookup/jsonp';
+    const stockSymbolUrl = 'http://dev.markitondemand.com/Api/v2/Lookup/jsonp';
 
     let params = new URLSearchParams();
     params.set('input', term);
@@ -20,7 +21,7 @@ export class StockmarketService {
   }
 
   getStockQuote(symbol: string) {
-    let stockQuoteUrl = 'http://dev.markitondemand.com/MODApis/Api/v2/Quote/jsonp';
+    const stockQuoteUrl = 'http://dev.markitondemand.com/MODApis/Api/v2/Quote/jsonp';
 
     let params = new URLSearchParams();
     params.set('symbol', symbol);
@@ -31,4 +32,24 @@ export class StockmarketService {
       .get(stockQuoteUrl, { search: params })
       .map(r => r.json());
   }
+
+  getInteractiveChart(symbol: string) {
+    const chartUrl = 'http://dev.markitondemand.com/Api/v2/InteractiveChart/jsonp';
+
+    let input = new ChartDataInput();
+    input.Normalized = false;
+    input.NumberOfDays = 365;
+    input.DataPeriod = "Day";
+    input.Elements = [new Element(symbol, "price", ["c"])];
+
+    let params = new URLSearchParams();
+    params.set('callback', 'JSONP_CALLBACK');
+    params.set('parameters', JSON.stringify(input));
+
+    return this.jsonp
+      .get(chartUrl, { search: params })
+      .map(r => r.json());
+  }
 }
+
+
