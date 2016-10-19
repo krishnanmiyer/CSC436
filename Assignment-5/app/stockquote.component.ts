@@ -4,7 +4,7 @@ import { StockmarketService } from './stockmarket.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
-import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from './stockChart.component';
+import { ChartDataOutput, Close, DataSeries, Element } from './stockChart.component';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctuntilchanged';
@@ -20,6 +20,7 @@ export class StockQuoteComponent {
   stockQuote: any;
   symbol: string;
   term$ = new Subject<string>();
+  chartattributes: ChartProperties;
   chartData: ChartDataOutput;
 
   constructor(private service: StockmarketService) {
@@ -28,7 +29,7 @@ export class StockQuoteComponent {
       .distinctUntilChanged()
       .subscribe(term => this.search(term));
 
-    this.initializeChartData();
+    this.initializeChart();
   }
 
   search(term: string) {
@@ -36,51 +37,51 @@ export class StockQuoteComponent {
       this.items.length = 0;
       return;
     }
-    this.service.getStockSymbol(term).subscribe(result => this.items = result);
+    this.service.getStockSymbol(term).subscribe(result => this.items = result, err => console.log("search Symbol: ", err));
   }
 
   quote(symbol: string) {
     this.symbol = symbol;
     this.items.length = 0;
 
-    this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(r => this.stockQuote = r);
-    this.getChartData(symbol);
+    this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(r => this.stockQuote = r, err => console.log("quote: ", err));
   }
 
   getChartData(symbol: string) {
-    this.service.getInteractiveChart(symbol).subscribe(r => this.populateChart(r, symbol), err => console.log(err));
+    this.chartattributes.datasets = undefined;
+    this.service.getInteractiveChart(symbol).subscribe(r => this.populateChart(r), err => console.log("getChartData: ", err));
   }
 
-  populateChart(data: any, symbol:string) {
-    this.chartData = null;
+  populateChart(data: ChartDataOutput) {
+    this.chartData = data;
+    console.log(this.chartData);
 
-    this.initializeChartData();
-    
-    //populate labels    
-    if (data.Dates.length > 0) {
-      for (let i = 0; i < data.Dates.length; i++) {
-        this.chartData.labels.push(this.getMonth(data.Dates[i]));
+    //initialize chart for redraw
+    this.initializeChart();
+
+    //populate labels
+
+    if (this.chartData.Dates.length > 0) {
+      for (let i = 0; i < this.chartData.Dates.length; i++) {
+        this.chartattributes.labels.push(this.getMonth(this.chartData.Dates[i]));
       }
     }
 
     //populate dataset
-    if (data.Positions.length > 0) {
+    let element = this.chartData.Elements[0];
+    if (element.DataSeries.close.values.length > 0) {
       let datasets = [
         {
-          label: symbol,
-          data: data.Positions
+          label: element.Symbol,
+          data: element.DataSeries.close.values
         }
       ];
-      this.chartData.datasets = datasets;
+      this.chartattributes.datasets = datasets;
     }
-
-    console.log("labels --> ", this.chartData.labels);
-    console.log("datasets --> ", this.chartData.datasets);
-
   }
 
-  initializeChartData() {
-    let output = new ChartDataOutput();
+  initializeChart() {
+    let output = new ChartProperties();
     output.options = { animation: false, responsive: true };
     output.colors = [{ // grey
       backgroundColor: 'rgba(148,159,177,0.2)',
@@ -93,8 +94,8 @@ export class StockQuoteComponent {
     output.chartType = 'line';
     output.legend = true;
     output.labels = new Array<string>();
-
-    this.chartData = output;
+    output.datasets = undefined;
+    this.chartattributes = output;
   }
 
   getMonth(dateIn): string {
@@ -105,4 +106,25 @@ export class StockQuoteComponent {
     let input = new Date(dateIn);
     return monthNames[input.getMonth()];
   }
+
+  getDate(dateIn): string {
+    return dateIn.slice(0, 10);
+  }
+
+  chartHovered(e: any) {
+
+  }
+
+  chartClicked(e: any) {
+
+  }
+}
+
+export class ChartProperties {
+  chartType: string;
+  datasets: any; //{ data: number[]; label: string }[];
+  labels: string[];
+  options: any;
+  colors: any[];
+  legend: boolean;
 }

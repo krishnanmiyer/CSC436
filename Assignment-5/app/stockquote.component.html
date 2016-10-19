@@ -5,17 +5,17 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-4 col-xs-4">
-			<div class="jumbotron">
+			<div class="well">
 				<div class="container">
-				<form class="form-inline">
-					<div class="form-group">
-						<label for="stockSymbol">Try Stock Name or Symbol ("Apple" or "AAPL")</label>
-						<input (input)="term$.next($event.target.value)" class="form-control" id="stockSymbol" name="stockSymbol" value={{symbol}}>
-						<ul class="list-group" [hidden]="items == null || items.length < 1" id="stockList">
-							<li class="list-group-item" *ngFor="let item of items"><a href="#" (click)="quote(item.Symbol);">{{item.Name}} ({{item.Exchange}})</a></li>
-						</ul>
-					</div>
-				</form>
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="stockSymbol">Try Stock Name or Symbol ("Apple" or "AAPL")</label>
+							<input (input)="term$.next($event.target.value)" class="form-control" id="stockSymbol" name="stockSymbol" value={{symbol}}>
+							<ul class="list-group" [hidden]="items == null || items.length < 1" id="stockList">
+								<li class="list-group-item" *ngFor="let item of items"><a href="#" (click)="quote(item.Symbol);getChartData(item.Symbol);">{{item.Name}} ({{item.Exchange}})</a></li>
+							</ul>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -50,27 +50,40 @@
 						</tbody>
 					</table>
 				</div>
+				<span class="help-block pull-right">*All prices in USD</span>
 			</div>
-			<div class="well well-lg">
+			<div class="well well-lg" *ngIf="(chartattributes != null || chartattributes != undefined) && chartattributes.datasets != null && chartattributes.datasets.length > 0">
+				<h3>({{stockQuote.Symbol}}) 12 months performance</h3>
 				<div class="row">
 					<div class="col-md-6">
 						<div style="display: block;">
-							<canvas baseChart width="400" height="300"
-										[data]="chartData.data"
-										[labels]="chartData.labels"
-										[options]="chartData.options"
-										[colors]="chartData.colors"
-										[legend]="chartData.legend"
-										[chartType]="chartData.chartType"
-										(chartHover)="chartHovered($event)"
-										(chartClick)="chartClicked($event)">
-					      </canvas>
+							<canvas baseChart width="500" height="300" [datasets]="chartattributes.datasets" [labels]="chartattributes.labels" [options]="chartattributes.options"
+								[colors]="chartattributes.colors" [legend]="chartattributes.legend" [chartType]="chartattributes.chartType" (chartHover)="chartHovered($event)"
+								(chartClick)="chartClicked($event)">
+							</canvas>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="table-responsive">
+							<table class="table table-condensed">
+								<tbody>
+									<tr>
+										<th>minimum - {{getDate(chartData.Elements[0].DataSeries.close.minDate)}}</th>
+										<td>${{chartData.Elements[0].DataSeries.close.min}}</td>
+									</tr>
+									<tr>
+										<th>maximum - {{getDate(chartData.Elements[0].DataSeries.close.maxDate)}}</th>
+										<td>${{chartData.Elements[0].DataSeries.close.max}}</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div *ngIf="stockQuote != null || stockQuote != undefined">
+			<div class="well well-lg" *ngIf="stockQuote != null || stockQuote != undefined">
 				<div class="table-responsive">
+					<h3>Capitalization</h3>
 					<table class="table table-bordered">
 						<thead>
 							<tr class="active">

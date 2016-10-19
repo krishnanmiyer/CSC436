@@ -12,12 +12,10 @@ export class ChartDataInput {
 }
 
 export class ChartDataOutput {
-    chartType: string;
-    datasets: { data: number[]; label: string }[];
-    labels: string[];
-    options: any;
-    colors: any[];
-    legend: boolean;
+    Labels: any;
+    Positions: number[];
+    Dates: string[];
+    Elements: Element[];
 }
 
 export class Close {

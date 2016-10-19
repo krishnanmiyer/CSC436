@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var stockmarket_service_1 = require('./stockmarket.service');
 var Subject_1 = require('rxjs/Subject');
-var stockChart_component_1 = require('./stockChart.component');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/debounceTime');
 require('rxjs/add/operator/distinctuntilchanged');
@@ -24,7 +23,7 @@ var StockQuoteComponent = (function () {
             .debounceTime(500)
             .distinctUntilChanged()
             .subscribe(function (term) { return _this.search(term); });
-        this.initializeChartData();
+        this.initializeChart();
     }
     StockQuoteComponent.prototype.search = function (term) {
         var _this = this;
@@ -32,43 +31,44 @@ var StockQuoteComponent = (function () {
             this.items.length = 0;
             return;
         }
-        this.service.getStockSymbol(term).subscribe(function (result) { return _this.items = result; });
+        this.service.getStockSymbol(term).subscribe(function (result) { return _this.items = result; }, function (err) { return console.log("search Symbol: ", err); });
     };
     StockQuoteComponent.prototype.quote = function (symbol) {
         var _this = this;
         this.symbol = symbol;
         this.items.length = 0;
-        this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(function (r) { return _this.stockQuote = r; });
-        this.getChartData(symbol);
+        this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(function (r) { return _this.stockQuote = r; }, function (err) { return console.log("quote: ", err); });
     };
     StockQuoteComponent.prototype.getChartData = function (symbol) {
         var _this = this;
-        this.service.getInteractiveChart(symbol).subscribe(function (r) { return _this.populateChart(r, symbol); }, function (err) { return console.log(err); });
+        this.chartattributes.datasets = undefined;
+        this.service.getInteractiveChart(symbol).subscribe(function (r) { return _this.populateChart(r); }, function (err) { return console.log("getChartData: ", err); });
     };
-    StockQuoteComponent.prototype.populateChart = function (data, symbol) {
-        this.chartData = null;
-        this.initializeChartData();
-        //populate labels    
-        if (data.Dates.length > 0) {
-            for (var i = 0; i < data.Dates.length; i++) {
-                this.chartData.labels.push(this.getMonth(data.Dates[i]));
+    StockQuoteComponent.prototype.populateChart = function (data) {
+        this.chartData = data;
+        console.log(this.chartData);
+        //initialize chart for redraw
+        this.initializeChart();
+        //populate labels
+        if (this.chartData.Dates.length > 0) {
+            for (var i = 0; i < this.chartData.Dates.length; i++) {
+                this.chartattributes.labels.push(this.getMonth(this.chartData.Dates[i]));
             }
         }
         //populate dataset
-        if (data.Positions.length > 0) {
+        var element = this.chartData.Elements[0];
+        if (element.DataSeries.close.values.length > 0) {
             var datasets = [
                 {
-                    label: symbol,
-                    data: data.Positions
+                    label: element.Symbol,
+                    data: element.DataSeries.close.values
                 }
             ];
-            this.chartData.datasets = datasets;
+            this.chartattributes.datasets = datasets;
         }
-        console.log("labels --> ", this.chartData.labels);
-        console.log("datasets --> ", this.chartData.datasets);
     };
-    StockQuoteComponent.prototype.initializeChartData = function () {
-        var output = new stockChart_component_1.ChartDataOutput();
+    StockQuoteComponent.prototype.initializeChart = function () {
+        var output = new ChartProperties();
         output.options = { animation: false, responsive: true };
         output.colors = [{
                 backgroundColor: 'rgba(148,159,177,0.2)',
@@ -81,7 +81,8 @@ var StockQuoteComponent = (function () {
         output.chartType = 'line';
         output.legend = true;
         output.labels = new Array();
-        this.chartData = output;
+        output.datasets = undefined;
+        this.chartattributes = output;
     };
     StockQuoteComponent.prototype.getMonth = function (dateIn) {
         var monthNames = ["January", "February", "March", "April", "May", "June",
@@ -89,6 +90,13 @@ var StockQuoteComponent = (function () {
         ];
         var input = new Date(dateIn);
         return monthNames[input.getMonth()];
+    };
+    StockQuoteComponent.prototype.getDate = function (dateIn) {
+        return dateIn.slice(0, 10);
+    };
+    StockQuoteComponent.prototype.chartHovered = function (e) {
+    };
+    StockQuoteComponent.prototype.chartClicked = function (e) {
     };
     StockQuoteComponent = __decorate([
         core_1.Component({
@@ -101,4 +109,10 @@ var StockQuoteComponent = (function () {
     return StockQuoteComponent;
 }());
 exports.StockQuoteComponent = StockQuoteComponent;
+var ChartProperties = (function () {
+    function ChartProperties() {
+    }
+    return ChartProperties;
+}());
+exports.ChartProperties = ChartProperties;
 //# sourceMappingURL=stockquote.component.js.map
