@@ -6,14 +6,13 @@ import { HttpModule, JsonpModule } from '@angular/http';
 
 import { StockmarketService } from './stockmarket.service';
 import { StockQuoteComponent } from './stockquote.component';
-import { LineChartDemoComponent } from './lineChart.component';
 import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from './stockChart.component';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, HttpModule, JsonpModule, ChartsModule],
   providers: [StockmarketService],
-  declarations: [StockQuoteComponent, LineChartDemoComponent],
-  bootstrap: [StockQuoteComponent, LineChartDemoComponent]
+  declarations: [StockQuoteComponent],
+  bootstrap: [StockQuoteComponent]
 })
 
 export class AppModule { }

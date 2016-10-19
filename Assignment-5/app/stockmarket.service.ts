@@ -39,7 +39,7 @@ export class StockmarketService {
     let input = new ChartDataInput();
     input.Normalized = false;
     input.NumberOfDays = 365;
-    input.DataPeriod = "Day";
+    input.DataPeriod = "Month";
     input.Elements = [new Element(symbol, "price", ["c"])];
 
     let params = new URLSearchParams();

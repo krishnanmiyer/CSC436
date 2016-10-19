@@ -41,7 +41,7 @@ var StockmarketService = (function () {
         var input = new stockChart_component_1.ChartDataInput();
         input.Normalized = false;
         input.NumberOfDays = 365;
-        input.DataPeriod = "Day";
+        input.DataPeriod = "Month";
         input.Elements = [new stockChart_component_1.Element(symbol, "price", ["c"])];
         var params = new http_1.URLSearchParams();
         params.set('callback', 'JSONP_CALLBACK');

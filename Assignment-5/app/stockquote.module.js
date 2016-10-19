@@ -15,7 +15,6 @@ var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var stockmarket_service_1 = require('./stockmarket.service');
 var stockquote_component_1 = require('./stockquote.component');
-var lineChart_component_1 = require('./lineChart.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -23,8 +22,8 @@ var AppModule = (function () {
         core_1.NgModule({
             imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, http_1.JsonpModule, ng2_charts_1.ChartsModule],
             providers: [stockmarket_service_1.StockmarketService],
-            declarations: [stockquote_component_1.StockQuoteComponent, lineChart_component_1.LineChartDemoComponent],
-            bootstrap: [stockquote_component_1.StockQuoteComponent, lineChart_component_1.LineChartDemoComponent]
+            declarations: [stockquote_component_1.StockQuoteComponent],
+            bootstrap: [stockquote_component_1.StockQuoteComponent]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

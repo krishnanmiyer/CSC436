@@ -1,5 +1,5 @@
 <div class="page-header">
-	<h2>CSC 436 <small>Assignment 4 - Calling API Service</small></h2>
+	<h2>CSC 436 <small>Calling API Service</small></h2>
 </div>
 
 <div class="container-fluid">
@@ -52,7 +52,22 @@
 				</div>
 			</div>
 			<div class="well well-lg">
-				<line-chart-demo>loading chart</line-chart-demo>
+				<div class="row">
+					<div class="col-md-6">
+						<div style="display: block;">
+							<canvas baseChart width="400" height="300"
+										[data]="chartData.data"
+										[labels]="chartData.labels"
+										[options]="chartData.options"
+										[colors]="chartData.colors"
+										[legend]="chartData.legend"
+										[chartType]="chartData.chartType"
+										(chartHover)="chartHovered($event)"
+										(chartClick)="chartClicked($event)">
+					      </canvas>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div *ngIf="stockQuote != null || stockQuote != undefined">
 				<div class="table-responsive">
