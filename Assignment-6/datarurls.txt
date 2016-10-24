@@ -1,0 +1,227 @@
+http://myallies.com/api/news/synt
+News http://www.myallies.com/Handler.ashx?r=270
+
+Investors
+market indices
+http://research.investors.com/Services/JSONPService.asmx/GetMarketIndices?callback=jQuery112407046882697284944_1477254533622&{}&_=1477254533637
+
+public class MarketIndice
+{
+    public string Symbol { get; set; }
+    public string IndexValueChange { get; set; }
+    public string IndexValue { get; set; }
+    public string IndexAbbr { get; set; }
+    public string IndexName { get; set; }
+    public string IndexValuePctChange { get; set; }
+    public string IndexVolume { get; set; }
+    public string IndexVolumeChange { get; set; }
+    public string IndexVolumePctChange { get; set; }
+    public bool IsUp { get; set; }
+    public string Flag { get; set; }
+    public string ChartUrl { get; set; }
+}
+
+public class D
+{
+    public string __type { get; set; }
+    public List<MarketIndice> marketIndices { get; set; }
+    public string UpdateTime { get; set; }
+    public string TimeStamp { get; set; }
+    public string MarketStatus { get; set; }
+}
+
+public class RootObject
+{
+    public D d { get; set; }
+}
+
+
+Stocks on the move
+http://research.investors.com/services/JSONPService.asmx/GetNumOfStocksOnTheMoveData?maxNumOfStocksPerList=5&callback=jQuery112407046882697284944_1477254533622&{}&_=1477254533638
+public class UpStock
+{
+    public string Symbol { get; set; }
+    public double Price0 { get; set; }
+    public double Price { get; set; }
+    public int Volume0 { get; set; }
+    public int AVol { get; set; }
+    public string Exchcd { get; set; }
+    public double PriceChange { get; set; }
+    public double PricePctChange { get; set; }
+    public double VolumePctChange { get; set; }
+    public string OSID { get; set; }
+    public string Coname { get; set; }
+    public string CompRating { get; set; }
+    public string ExchangeName { get; set; }
+}
+
+public class DownStock
+{
+    public string Symbol { get; set; }
+    public double Price0 { get; set; }
+    public double Price { get; set; }
+    public int Volume0 { get; set; }
+    public int AVol { get; set; }
+    public string Exchcd { get; set; }
+    public double PriceChange { get; set; }
+    public double PricePctChange { get; set; }
+    public double VolumePctChange { get; set; }
+    public string OSID { get; set; }
+    public string Coname { get; set; }
+    public string CompRating { get; set; }
+    public string ExchangeName { get; set; }
+}
+
+public class Sotm
+{
+    public List<UpStock> UpStocks { get; set; }
+    public List<DownStock> DownStocks { get; set; }
+    public string MarketDate { get; set; }
+    public string TimeStamp { get; set; }
+    public string MarketStatus { get; set; }
+    public object Source { get; set; }
+}
+
+public class LDB
+{
+    public string ProdUrl { get; set; }
+    public string ChartUrl { get; set; }
+}
+
+public class D
+{
+    public string __type { get; set; }
+    public Sotm sotm { get; set; }
+    public int flag { get; set; }
+    public string getAllFlags { get; set; }
+    public bool useBATS { get; set; }
+    public string source { get; set; }
+    public int UpsTotal { get; set; }
+    public int DownsTotal { get; set; }
+    public LDB LDB { get; set; }
+    public object RoadblockURL { get; set; }
+    public object RoadblockMessages { get; set; }
+}
+
+public class RootObject
+{
+    public D d { get; set; }
+}
+
+
+market trend
+http://research.investors.com/services/ChartService.svc/GetData
+
+payload
+{"req":{"Symbol":"0NDQC","Type":1,"StartDate":"2016-6-28","EndDate":"2016-10-23T20:30:54.931Z","EnableBats":true}}
+
+
+public class CompanyInfo
+{
+    public int avgVolume { get; set; }
+    public string avgVolumeAsLabel { get; set; }
+    public string coName { get; set; }
+    public int dayRate { get; set; }
+    public bool hasConvertableIssue { get; set; }
+    public bool hasWarrant { get; set; }
+    public string industryGroup { get; set; }
+    public bool isValidETF { get; set; }
+    public bool isValidIndex { get; set; }
+    public int marketCapitalizationPrimary { get; set; }
+    public string marketCapitalizationPrimaryAsLabel { get; set; }
+    public int marketCapitalizationSecondary { get; set; }
+    public double offWeekHigh { get; set; }
+    public double price { get; set; }
+    public double priceChange { get; set; }
+    public string primaryExchange { get; set; }
+    public int sharesInFloat { get; set; }
+    public int sharesOutstandingPrimary { get; set; }
+    public string sharesOutstandingPrimaryAsLabel { get; set; }
+    public int sharesOutstandingSecondary { get; set; }
+    public int shortInterestPosition { get; set; }
+    public int shortInterestRatio { get; set; }
+    public string symbol { get; set; }
+    public string type { get; set; }
+    public int volume { get; set; }
+    public int volumeBase { get; set; }
+    public double weeksHigh { get; set; }
+    public double weeksLow { get; set; }
+}
+
+public class Holiday
+{
+    public DateTime date { get; set; }
+    public string holiday { get; set; }
+}
+
+public class Series
+{
+    public double close { get; set; }
+    public DateTime date { get; set; }
+    public int dateIndicator { get; set; }
+    public double high { get; set; }
+    public double indexClose { get; set; }
+    public double low { get; set; }
+    public int volume { get; set; }
+}
+
+public class Summary
+{
+    public string URL { get; set; }
+    public string headquarters { get; set; }
+    public DateTime newIssue { get; set; }
+    public string phone { get; set; }
+    public string shortStory { get; set; }
+}
+
+public class GetDataResult
+{
+    public DateTime asOf { get; set; }
+    public CompanyInfo companyInfo { get; set; }
+    public int ePSRating { get; set; }
+    public DateTime endDate { get; set; }
+    public string errorMessage { get; set; }
+    public int fiscalMonthEnd { get; set; }
+    public List<Holiday> holidays { get; set; }
+    public string marketDate { get; set; }
+    public int osid { get; set; }
+    public int rSRating { get; set; }
+    public List<Series> series { get; set; }
+    public string source { get; set; }
+    public DateTime startDate { get; set; }
+    public Summary summary { get; set; }
+    public string symbol { get; set; }
+    public int type { get; set; }
+}
+
+public class RootObject
+{
+    public GetDataResult GetDataResult { get; set; }
+}
+
+
+Get all news
+http://research.investors.com/Services/JSONPService.asmx/GetInTheNews?callback=jQuery112407046882697284944_1477254533624&{}&_=1477254533625
+
+public class Record
+{
+    public string Title { get; set; }
+    public string Url { get; set; }
+    public string Publisher { get; set; }
+    public string PublishDate { get; set; }
+    public string Summary { get; set; }
+    public List<object> IBDStocks { get; set; }
+    public bool IsThirdParty { get; set; }
+}
+
+public class D
+{
+    public string __type { get; set; }
+    public List<Record> Records { get; set; }
+    public string ViewAllUrl { get; set; }
+}
+
+public class RootObject
+{
+    public D d { get; set; }
+}
