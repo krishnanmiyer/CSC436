@@ -1,9 +1,3 @@
-import { NgModule } from "@angular/core";
-
-@NgModule({
-
-})
-
 export class ChartDataInput {
     Normalized: boolean;
     NumberOfDays: number;

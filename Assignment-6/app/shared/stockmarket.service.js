@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
-var stockChart_component_1 = require('./stockChart.component');
+var stockmarket_model_1 = require('./stockmarket.model');
 var StockmarketService = (function () {
     function StockmarketService(jsonp) {
         this.jsonp = jsonp;
@@ -38,16 +38,22 @@ var StockmarketService = (function () {
     };
     StockmarketService.prototype.getInteractiveChart = function (symbol) {
         var chartUrl = 'http://dev.markitondemand.com/Api/v2/InteractiveChart/jsonp';
-        var input = new stockChart_component_1.ChartDataInput();
+        var input = new stockmarket_model_1.ChartDataInput();
         input.Normalized = false;
         input.NumberOfDays = 365;
         input.DataPeriod = "Month";
-        input.Elements = [new stockChart_component_1.Element(symbol, "price", ["c"])];
+        input.Elements = [new stockmarket_model_1.Element(symbol, "price", ["c"])];
         var params = new http_1.URLSearchParams();
         params.set('callback', 'JSONP_CALLBACK');
         params.set('parameters', JSON.stringify(input));
         return this.jsonp
             .get(chartUrl, { search: params })
+            .map(function (r) { return r.json(); });
+    };
+    StockmarketService.prototype.getCompanyNews = function (symbol) {
+        var companyNewsUrl = 'http://myallies.com/api/news';
+        return this.jsonp
+            .get(companyNewsUrl + '/' + symbol)
             .map(function (r) { return r.json(); });
     };
     StockmarketService = __decorate([

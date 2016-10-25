@@ -4,9 +4,9 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
 
-import { StockmarketService } from './stockmarket.service';
-import { StockQuoteComponent } from './stockquote.component';
-import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from './stockChart.component';
+import { StockmarketService } from '../shared/stockmarket.service';
+import { StockQuoteComponent } from './quote.component';
+import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from '../shared/stockmarket.model';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, HttpModule, JsonpModule, ChartsModule],
@@ -15,5 +15,5 @@ import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from './s
   bootstrap: [StockQuoteComponent]
 })
 
-export class AppModule { }
+export class QuoteModule { }
 

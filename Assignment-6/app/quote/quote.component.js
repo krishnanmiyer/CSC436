@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var stockmarket_service_1 = require('./stockmarket.service');
+var stockmarket_service_1 = require('../shared/stockmarket.service');
 var Subject_1 = require('rxjs/Subject');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/debounceTime');
@@ -38,6 +38,12 @@ var StockQuoteComponent = (function () {
         this.symbol = symbol;
         this.items.length = 0;
         this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(function (r) { return _this.stockQuote = r; }, function (err) { return console.log("quote: ", err); });
+    };
+    StockQuoteComponent.prototype.getCompanyNews = function (symbol) {
+        var _this = this;
+        this.news = undefined;
+        this.service.getCompanyNews(symbol).subscribe(function (r) { return _this.news = r; }, function (err) { return console.log("getCompanyNews: ", err); });
+        console.log(this.news);
     };
     StockQuoteComponent.prototype.getChartData = function (symbol) {
         var _this = this;
@@ -101,8 +107,8 @@ var StockQuoteComponent = (function () {
     StockQuoteComponent = __decorate([
         core_1.Component({
             selector: 'stock-quote',
-            templateUrl: 'app/stockquote.component.html',
-            styleUrls: ['app/stockquote.component.css'],
+            templateUrl: 'app/quote/quote.component.html',
+            styleUrls: ['app/quote/quote.component.css'],
         }), 
         __metadata('design:paramtypes', [stockmarket_service_1.StockmarketService])
     ], StockQuoteComponent);
@@ -115,4 +121,4 @@ var ChartProperties = (function () {
     return ChartProperties;
 }());
 exports.ChartProperties = ChartProperties;
-//# sourceMappingURL=stockquote.component.js.map
+//# sourceMappingURL=quote.component.js.map

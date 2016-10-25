@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Jsonp, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from './stockChart.component';
+import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from './stockmarket.model';
 
 @Injectable()
 export class StockmarketService {
@@ -50,6 +50,15 @@ export class StockmarketService {
       .get(chartUrl, { search: params })
       .map(r => r.json());
   }
+
+  getCompanyNews(symbol: string) {
+    const companyNewsUrl = 'http://myallies.com/api/news';
+
+    return this.jsonp
+      .get(companyNewsUrl + '/' + symbol)
+      .map(r => r.json());
+  }
+
 }
 
 

@@ -1,18 +1,18 @@
 import { Component, Input } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { StockmarketService } from './stockmarket.service';
+import { StockmarketService } from '../shared/stockmarket.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
-import { ChartDataOutput, Close, DataSeries, Element } from './stockChart.component';
+import { ChartDataOutput, Close, DataSeries, Element } from '../shared/stockmarket.model';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctuntilchanged';
 
 @Component({
   selector: 'stock-quote',
-  templateUrl: 'app/stockquote.component.html',
-  styleUrls: ['app/stockquote.component.css'],
+  templateUrl: 'app/quote/quote.component.html',
+  styleUrls: ['app/quote/quote.component.css'],
 })
 
 export class StockQuoteComponent {
@@ -22,6 +22,7 @@ export class StockQuoteComponent {
   term$ = new Subject<string>();
   chartattributes: ChartProperties;
   chartData: ChartDataOutput;
+  news: any;
 
   constructor(private service: StockmarketService) {
     this.term$
@@ -45,6 +46,12 @@ export class StockQuoteComponent {
     this.items.length = 0;
 
     this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(r => this.stockQuote = r, err => console.log("quote: ", err));
+  }
+
+  getCompanyNews(symbol: string) {
+    this.news = undefined;
+    this.service.getCompanyNews(symbol).subscribe(r => this.news = r, err => console.log("getCompanyNews: ", err));
+    console.log(this.news);
   }
 
   getChartData(symbol: string) {
@@ -119,6 +126,8 @@ export class StockQuoteComponent {
 
   }
 }
+
+
 
 export class ChartProperties {
   chartType: string;

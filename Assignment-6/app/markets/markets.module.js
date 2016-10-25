@@ -10,24 +10,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
-var ng2_charts_1 = require('ng2-charts/ng2-charts');
-var forms_1 = require('@angular/forms');
-var http_1 = require('@angular/http');
-var stockmarket_service_1 = require('./stockmarket.service');
-var stockquote_component_1 = require('./stockquote.component');
-var AppModule = (function () {
-    function AppModule() {
+var router_1 = require('@angular/router');
+var markets_component_1 = require('./markets.component');
+var MarketsModule = (function () {
+    function MarketsModule() {
     }
-    AppModule = __decorate([
+    MarketsModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, http_1.JsonpModule, ng2_charts_1.ChartsModule],
-            providers: [stockmarket_service_1.StockmarketService],
-            declarations: [stockquote_component_1.StockQuoteComponent],
-            bootstrap: [stockquote_component_1.StockQuoteComponent]
+            imports: [
+                platform_browser_1.BrowserModule, router_1.RouterModule
+            ],
+            declarations: [
+                markets_component_1.MarketsComponent
+            ],
+            exports: [markets_component_1.MarketsComponent],
+            bootstrap: [markets_component_1.MarketsComponent]
         }), 
         __metadata('design:paramtypes', [])
-    ], AppModule);
-    return AppModule;
+    ], MarketsModule);
+    return MarketsModule;
 }());
-exports.AppModule = AppModule;
-//# sourceMappingURL=stockquote.module.js.map
+exports.MarketsModule = MarketsModule;
+//# sourceMappingURL=markets.module.js.map
