@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Jsonp, URLSearchParams } from '@angular/http';
+import { Jsonp, URLSearchParams, HttpModule, Headers, RequestOptions, Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from './stockmarket.model';
 
 @Injectable()
 export class StockmarketService {
-  constructor(private jsonp: Jsonp) { }
+  constructor(private jsonp: Jsonp, private http: Http) { }
 
   getStockSymbol(term: string) {
     const stockSymbolUrl = 'http://dev.markitondemand.com/Api/v2/Lookup/jsonp';
@@ -59,6 +59,23 @@ export class StockmarketService {
       .map(r => r.json());
   }
 
+  getStockMarketUpdates() {
+    const newsUrl = 'http://research.investors.com/Services/JSONPService.asmx/GetInTheNews'
+
+    let params = new URLSearchParams();
+    params.set('callback', 'JSONP_CALLBACK');
+    return this.jsonp.get(newsUrl, { search: params }).map(r => r.json());
+  }
+
+  getMarketToday(input: string) {
+    const todayUrl = 'http://research.investors.com/services/ChartService.svc/GetData'
+
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    
+    return this.http.post(todayUrl, { input }, options).map(r => r.json());
+      
+  }
 }
 
 

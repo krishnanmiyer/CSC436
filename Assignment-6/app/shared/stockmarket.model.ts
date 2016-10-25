@@ -38,3 +38,61 @@ export class Element {
         this.Params = params;
     }
 }
+
+export class Record {
+    Title: string;
+    Url: string;
+    Publisher: string;
+    PublishDate: string;
+    Summary: string;
+    IBDStocks: any[];
+    IsThirdParty: boolean;
+}
+
+export class D {
+    __type: string;
+    Records: Record[];
+    ViewAllUrl: string;
+}
+
+export class StockMarket {
+    d: D
+}
+
+export class MarketDataInput {
+    req: Req;
+}
+
+export class Req {
+    Symbol: string;
+    Type: number;
+    StartDate: string;
+    EndDate: string;
+    EnableBats: boolean;
+}
+
+export class ChartProperties {
+  chartType: string;
+  datasets: any; //{ data: number[]; label: string }[];
+  labels: string[];
+  options: any;
+  colors: any[];
+  legend: boolean;
+}
+
+export class Series
+{
+    close: number;
+    date: string;
+}
+
+export class GetDataResult
+{
+    series: Series[];
+    symbol: string;
+}
+
+export class MarketDataOutput
+{
+    GetDataResult: GetDataResult;
+}

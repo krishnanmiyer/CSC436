@@ -4,7 +4,7 @@ import { StockmarketService } from '../shared/stockmarket.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
-import { ChartDataOutput, Close, DataSeries, Element } from '../shared/stockmarket.model';
+import { ChartDataOutput, Close, DataSeries, Element, ChartProperties } from '../shared/stockmarket.model';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctuntilchanged';
@@ -125,15 +125,4 @@ export class StockQuoteComponent {
   chartClicked(e: any) {
 
   }
-}
-
-
-
-export class ChartProperties {
-  chartType: string;
-  datasets: any; //{ data: number[]; label: string }[];
-  labels: string[];
-  options: any;
-  colors: any[];
-  legend: boolean;
 }

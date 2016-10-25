@@ -13,6 +13,7 @@ var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
+var http_1 = require('@angular/http');
 var home_module_1 = require('./home/home.module');
 var quote_module_1 = require('./quote/quote.module');
 var markets_module_1 = require('./markets/markets.module');
@@ -33,6 +34,9 @@ var AppModule = (function () {
             imports: [
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
+                http_1.Jsonp,
+                http_1.URLSearchParams,
+                http_1.HttpModule,
                 router_1.RouterModule.forRoot(routes),
                 home_module_1.HomeModule,
                 quote_module_1.QuoteModule,

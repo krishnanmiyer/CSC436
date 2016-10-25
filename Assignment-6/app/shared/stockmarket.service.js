@@ -13,8 +13,9 @@ var http_1 = require('@angular/http');
 require('rxjs/add/operator/map');
 var stockmarket_model_1 = require('./stockmarket.model');
 var StockmarketService = (function () {
-    function StockmarketService(jsonp) {
+    function StockmarketService(jsonp, http) {
         this.jsonp = jsonp;
+        this.http = http;
     }
     StockmarketService.prototype.getStockSymbol = function (term) {
         var stockSymbolUrl = 'http://dev.markitondemand.com/Api/v2/Lookup/jsonp';
@@ -56,9 +57,21 @@ var StockmarketService = (function () {
             .get(companyNewsUrl + '/' + symbol)
             .map(function (r) { return r.json(); });
     };
+    StockmarketService.prototype.getStockMarketUpdates = function () {
+        var newsUrl = 'http://research.investors.com/Services/JSONPService.asmx/GetInTheNews';
+        var params = new http_1.URLSearchParams();
+        params.set('callback', 'JSONP_CALLBACK');
+        return this.jsonp.get(newsUrl, { search: params }).map(function (r) { return r.json(); });
+    };
+    StockmarketService.prototype.getMarketToday = function (input) {
+        var todayUrl = 'http://research.investors.com/services/ChartService.svc/GetData';
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(todayUrl, { input: input }, options).map(function (r) { return r.json(); });
+    };
     StockmarketService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Jsonp])
+        __metadata('design:paramtypes', [http_1.Jsonp, http_1.Http])
     ], StockmarketService);
     return StockmarketService;
 }());

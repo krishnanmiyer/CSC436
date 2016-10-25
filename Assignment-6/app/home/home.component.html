@@ -1,49 +1,59 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-xs-12 col-md-8">
-			<div class="panel panel-default">
+			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">Latest News</h3>
+					<h3 class="panel-title">Business News</h3>
 				</div>
 				<div class="panel-body">
-					<div class="media">
-						<div class="media-left">
-							<a href="#">
-								<img class="media-object" src="..." alt="...">
-							</a>
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Media heading</h4>
-							...
-						</div>
-					</div>
-
-					<div class="media">
-						<div class="media-left">
-							<a href="#">
-								<img class="media-object" src="..." alt="...">
-							</a>
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">Media heading</h4>
-							...
-						</div>
+					<div class="list-group-item" *ngFor="let item of marketUpdates">
+						<h4 class="list-group-item-heading"><a href="{{item.Url}}">{{item.Title}}</a></h4>
+						{{item.Summary}}
+						<p class="list-group-item-text">{{item.Publisher}} - {{item.PublishDate}}</p>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="col-xs-6 col-md-4">
-			<div class="panel panel-default">
+			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">Market Trends</h3>
+					<h3 class="panel-title">Market Today</h3>
 				</div>
 				<div class="panel-body">
-					Panel content
+					<div class="row">
+						<div class="col-xs-12 col-md-8">
+
+						</div>
+						<div class="col-xs-6 col-md-4">
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-6 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>						
+					</div>
+					<div class="row">
+						<div class="col-xs-6 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>						
+					</div>
+					<div class="row">
+						<div class="col-xs-6 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>
+						<div class="col-xs-4 col-md-3"></div>						
+					</div>
 				</div>
 			</div>
-
-
-
 		</div>
 	</div>
 </div>

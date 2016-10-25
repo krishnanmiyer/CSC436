@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var stockmarket_service_1 = require('../shared/stockmarket.service');
 var Subject_1 = require('rxjs/Subject');
+var stockmarket_model_1 = require('../shared/stockmarket.model');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/debounceTime');
 require('rxjs/add/operator/distinctuntilchanged');
@@ -74,7 +75,7 @@ var StockQuoteComponent = (function () {
         }
     };
     StockQuoteComponent.prototype.initializeChart = function () {
-        var output = new ChartProperties();
+        var output = new stockmarket_model_1.ChartProperties();
         output.options = { animation: false, responsive: true };
         output.colors = [{
                 backgroundColor: 'rgba(148,159,177,0.2)',
@@ -115,10 +116,4 @@ var StockQuoteComponent = (function () {
     return StockQuoteComponent;
 }());
 exports.StockQuoteComponent = StockQuoteComponent;
-var ChartProperties = (function () {
-    function ChartProperties() {
-    }
-    return ChartProperties;
-}());
-exports.ChartProperties = ChartProperties;
 //# sourceMappingURL=quote.component.js.map

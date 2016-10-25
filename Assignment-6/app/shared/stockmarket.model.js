@@ -32,4 +32,58 @@ var Element = (function () {
     return Element;
 }());
 exports.Element = Element;
+var Record = (function () {
+    function Record() {
+    }
+    return Record;
+}());
+exports.Record = Record;
+var D = (function () {
+    function D() {
+    }
+    return D;
+}());
+exports.D = D;
+var StockMarket = (function () {
+    function StockMarket() {
+    }
+    return StockMarket;
+}());
+exports.StockMarket = StockMarket;
+var MarketDataInput = (function () {
+    function MarketDataInput() {
+    }
+    return MarketDataInput;
+}());
+exports.MarketDataInput = MarketDataInput;
+var Req = (function () {
+    function Req() {
+    }
+    return Req;
+}());
+exports.Req = Req;
+var ChartProperties = (function () {
+    function ChartProperties() {
+    }
+    return ChartProperties;
+}());
+exports.ChartProperties = ChartProperties;
+var Series = (function () {
+    function Series() {
+    }
+    return Series;
+}());
+exports.Series = Series;
+var GetDataResult = (function () {
+    function GetDataResult() {
+    }
+    return GetDataResult;
+}());
+exports.GetDataResult = GetDataResult;
+var MarketDataOutput = (function () {
+    function MarketDataOutput() {
+    }
+    return MarketDataOutput;
+}());
+exports.MarketDataOutput = MarketDataOutput;
 //# sourceMappingURL=stockmarket.model.js.map
