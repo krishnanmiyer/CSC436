@@ -86,4 +86,10 @@ var MarketDataOutput = (function () {
     return MarketDataOutput;
 }());
 exports.MarketDataOutput = MarketDataOutput;
+var MarketIndice = (function () {
+    function MarketIndice() {
+    }
+    return MarketIndice;
+}());
+exports.MarketIndice = MarketIndice;
 //# sourceMappingURL=stockmarket.model.js.map

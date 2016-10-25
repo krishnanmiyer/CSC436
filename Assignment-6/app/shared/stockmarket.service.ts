@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Jsonp, URLSearchParams, HttpModule, Headers, RequestOptions, Http } from '@angular/http';
+import { Jsonp, URLSearchParams, Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from './stockmarket.model';
 
@@ -70,11 +70,20 @@ export class StockmarketService {
   getMarketToday(input: string) {
     const todayUrl = 'http://research.investors.com/services/ChartService.svc/GetData'
 
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    
-    return this.http.post(todayUrl, { input }, options).map(r => r.json());
-      
+    let headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('Access-Control-Allow-Credentials','true');
+    headers.append('Access-Control-Allow-Origin','*');
+
+    return this.http.post(todayUrl, input , { headers: headers}).map(r => r.json());
+  }
+
+  getMarketIndices() {
+    const indicesUrl = 'http://research.investors.com/Services/JSONPService.asmx/GetMarketIndices'
+
+    let params = new URLSearchParams();
+    params.set('callback', 'JSONP_CALLBACK');
+    return this.jsonp.get(indicesUrl, { search: params }).map(r => r.json());
   }
 }
 

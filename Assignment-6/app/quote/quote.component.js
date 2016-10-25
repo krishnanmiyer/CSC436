@@ -53,7 +53,6 @@ var StockQuoteComponent = (function () {
     };
     StockQuoteComponent.prototype.populateChart = function (data) {
         this.chartData = data;
-        console.log(this.chartData);
         //initialize chart for redraw
         this.initializeChart();
         //populate labels

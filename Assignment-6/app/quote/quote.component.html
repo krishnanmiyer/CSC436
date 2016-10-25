@@ -9,21 +9,19 @@
 								<label for="stockSymbol">Try Stock Name or Symbol ("Apple" or "AAPL")</label>
 								<input (input)="term$.next($event.target.value)" class="form-control" id="stockSymbol" name="stockSymbol" value={{symbol}}>
 								<ul class="list-group" [hidden]="items == null || items.length < 1" id="stockList">
-									<li class="list-group-item" *ngFor="let item of items"><a (click)="quote(item.Symbol);getChartData(item.Symbol);getCompanyNews(item.Symbol);">{{item.Name}} ({{item.Exchange}})</a></li>
+									<li class="list-group-item" *ngFor="let item of items"><a (click)="quote(item.Symbol);getChartData(item.Symbol);">{{item.Name}} ({{item.Exchange}})</a></li>
 								</ul>
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
-			"news ---> " {{news | json}}
-			<div class="row" *ngIf="news != null">
 
-				
+			<!--<div class="row" *ngIf="news != null">
 				<ul class="list-group">
 					<li class="list-group-item" *ngFor="let item of news; trackBy:item.NewsID;"><a href="item.URL">{{item.Title}}</a></li>
 				</ul>
-			</div>
+			</div>-->
 		</div>
 		<div class="col-md-8 col-xs-8">
 			<div class="well well-lg" *ngIf="stockQuote != null || stockQuote != undefined">

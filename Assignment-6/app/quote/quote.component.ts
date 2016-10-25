@@ -61,13 +61,11 @@ export class StockQuoteComponent {
 
   populateChart(data: ChartDataOutput) {
     this.chartData = data;
-    console.log(this.chartData);
 
     //initialize chart for redraw
     this.initializeChart();
 
     //populate labels
-
     if (this.chartData.Dates.length > 0) {
       for (let i = 0; i < this.chartData.Dates.length; i++) {
         this.chartattributes.labels.push(this.getMonth(this.chartData.Dates[i]));

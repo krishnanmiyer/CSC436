@@ -34,8 +34,6 @@ var AppModule = (function () {
             imports: [
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
-                http_1.Jsonp,
-                http_1.URLSearchParams,
                 http_1.HttpModule,
                 router_1.RouterModule.forRoot(routes),
                 home_module_1.HomeModule,

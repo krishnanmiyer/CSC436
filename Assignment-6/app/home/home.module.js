@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var router_1 = require('@angular/router');
+var http_1 = require('@angular/http');
 var home_component_1 = require('./home.component');
 var HomeModule = (function () {
     function HomeModule() {
@@ -18,7 +19,8 @@ var HomeModule = (function () {
     HomeModule = __decorate([
         core_1.NgModule({
             imports: [
-                platform_browser_1.BrowserModule, router_1.RouterModule
+                platform_browser_1.BrowserModule, router_1.RouterModule,
+                http_1.HttpModule
             ],
             declarations: [
                 home_component_1.HomeComponent

@@ -65,9 +65,17 @@ var StockmarketService = (function () {
     };
     StockmarketService.prototype.getMarketToday = function (input) {
         var todayUrl = 'http://research.investors.com/services/ChartService.svc/GetData';
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.post(todayUrl, { input: input }, options).map(function (r) { return r.json(); });
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Access-Control-Allow-Credentials', 'true');
+        headers.append('Access-Control-Allow-Origin', '*');
+        return this.http.post(todayUrl, input, { headers: headers }).map(function (r) { return r.json(); });
+    };
+    StockmarketService.prototype.getMarketIndices = function () {
+        var indicesUrl = 'http://research.investors.com/Services/JSONPService.asmx/GetMarketIndices';
+        var params = new http_1.URLSearchParams();
+        params.set('callback', 'JSONP_CALLBACK');
+        return this.jsonp.get(indicesUrl, { search: params }).map(function (r) { return r.json(); });
     };
     StockmarketService = __decorate([
         core_1.Injectable(), 

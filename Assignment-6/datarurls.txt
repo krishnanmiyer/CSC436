@@ -225,3 +225,89 @@ public class RootObject
 {
     public D d { get; set; }
 }
+
+
+
+
+  getInputData(symbol: string): MarketDataInput {
+    let today = new Date();
+    let start = new Date();
+    start.setMonth(new Date().getMonth() - 6)
+    
+    let input = new MarketDataInput();
+    let req = new Req();
+    req.Symbol = symbol;
+    req.StartDate = start.toLocaleDateString();
+    req.EndDate = today.toLocaleDateString();
+    req.EnableBats = true;
+    req.Type = 1;
+    input.req = req;
+    
+    return input;
+  }
+
+
+
+    populateChart(data: MarketDataOutput) {
+    this.marketTodayChartData = data;
+    console.log(this.marketTodayChartData);
+
+    //initialize chart for redraw
+    this.initializeChart();
+
+    //populate labels
+    let element = this.marketTodayChartData.GetDataResult;
+    let values = new Array<number>();
+    if (element != null && element.series.length > 0) {
+      for (let i = 0; i < this.marketTodayChartData.GetDataResult.series.length; i++) {
+        this.marketTodayChartattributes.labels.push(this.getMonth(this.marketTodayChartData.GetDataResult.series[i].date));
+        values.push(this.marketTodayChartData.GetDataResult.series[i].close);
+      }
+
+      //populate dataset
+      let datasets = [
+        {
+          label: element.symbol,
+          data: values
+        }
+      ];
+      this.marketTodayChartattributes.datasets = datasets;
+    }
+  }
+
+
+  initializeChart() {
+    let output = new ChartProperties();
+    output.options = { animation: false, responsive: true };
+    output.colors = [{ // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    }];
+    output.chartType = 'line';
+    output.legend = true;
+    output.labels = new Array<string>();
+    output.datasets = undefined;
+    this.marketTodayChartattributes = output;
+  }
+}
+
+  getInputData(symbol: string): MarketDataInput {
+    let today = new Date();
+    let start = new Date();
+    start.setMonth(new Date().getMonth() - 6)
+    
+    let input = new MarketDataInput();
+    let req = new Req();
+    req.Symbol = symbol;
+    req.StartDate = start.toLocaleDateString();
+    req.EndDate = today.toLocaleDateString();
+    req.EnableBats = true;
+    req.Type = 1;
+    input.req = req;
+    
+    return input;
+  }

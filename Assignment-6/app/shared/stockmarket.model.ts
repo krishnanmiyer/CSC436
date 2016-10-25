@@ -53,6 +53,10 @@ export class D {
     __type: string;
     Records: Record[];
     ViewAllUrl: string;
+    marketIndices: MarketIndice[];
+    UpdateTime: string;
+    TimeStamp: string;
+    MarketStatus: string;
 }
 
 export class StockMarket {
@@ -95,4 +99,20 @@ export class GetDataResult
 export class MarketDataOutput
 {
     GetDataResult: GetDataResult;
+}
+
+export class MarketIndice
+{
+    Symbol: string;
+    IndexValueChange: string;
+    IndexValue: string;
+    IndexAbbr: string;
+    IndexName: string;
+    IndexValuePctChange: string;
+    IndexVolume: string;
+    IndexVolumeChange: string;
+    IndexVolumePctChange: string;
+    IsUp: boolean;
+    Flag: string;
+    ChartUrl: string;
 }

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { LocationStrategy, HashLocationStrategy, APP_BASE_HREF } from '@angular/common';
-import { Jsonp, URLSearchParams, HttpModule }  from '@angular/http';
+import { HttpModule }  from '@angular/http';
 
 import { HomeModule } from './home/home.module';
 import { QuoteModule } from './quote/quote.module';
@@ -24,8 +24,6 @@ const routes: Routes = [{ path: '', redirectTo: 'home', pathMatch: 'full' },
   imports: [
     BrowserModule,
     FormsModule,
-    Jsonp,
-    URLSearchParams,
     HttpModule,
     RouterModule.forRoot(routes),
     HomeModule,

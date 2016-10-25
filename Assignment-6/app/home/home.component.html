@@ -8,8 +8,8 @@
 				<div class="panel-body">
 					<div class="list-group-item" *ngFor="let item of marketUpdates">
 						<h4 class="list-group-item-heading"><a href="{{item.Url}}">{{item.Title}}</a></h4>
-						{{item.Summary}}
-						<p class="list-group-item-text">{{item.Publisher}} - {{item.PublishDate}}</p>
+						<!--<div [innerHTML]="item.Summary"></div>-->
+						<p class="list-group-item-text">Source: {{item.Publisher}} - {{item.PublishDate}}</p>
 					</div>
 				</div>
 			</div>
@@ -21,36 +21,24 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-xs-12 col-md-8">
-
-						</div>
-						<div class="col-xs-6 col-md-4">
-
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>
-					</div>
-					<div class="row">
-						<div class="col-xs-6 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>						
-					</div>
-					<div class="row">
-						<div class="col-xs-6 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>						
-					</div>
-					<div class="row">
-						<div class="col-xs-6 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>
-						<div class="col-xs-4 col-md-3"></div>						
+						<table class="table">
+							<tr *ngFor="let market of marketIndices">
+								<td>{{market.IndexName}} </td>
+								<td>{{market.IndexValue | number:'1.2-2'}} </td>
+								<td>
+									<div [ngClass]="{'text-success': market.IndexValuePctChange > 0, 'text-danger': market.IndexValuePctChange < 0}">
+										<span [ngClass]="{'glyphicon glyphicon-arrow-up': market.IndexValuePctChange > 0, 'glyphicon glyphicon-arrow-down': market.IndexValuePctChange < 0}"
+											aria-hidden="true"></span> {{market.IndexValuePctChange |number : '1.2-2'}}%
+									</div>
+								</td>
+								<td>
+									<div [ngClass]="{'text-success': market.IndexValuePctChange > 0, 'text-danger': market.IndexValuePctChange < 0}">
+										<span [ngClass]="{'glyphicon glyphicon-arrow-up': market.IndexValuePctChange > 0, 'glyphicon glyphicon-arrow-down': market.IndexValuePctChange < 0}"
+											aria-hidden="true"></span> {{market.IndexValueChange| number:'1.2-2'}}
+									</div>
+								</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>
