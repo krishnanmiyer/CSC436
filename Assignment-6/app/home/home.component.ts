@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { StockmarketService } from '../shared/stockmarket.service';
-import { StockMarket, D, Record, MarketDataInput, Req, GetDataResult, Series, MarketDataOutput, MarketIndice } from '../shared/stockmarket.model';
+import { StockMarket, D, Record, MarketDataInput, Req, GetDataResult, Series, MarketDataOutput, MarketIndice, Bullion } from '../shared/stockmarket.model';
 import { ChartDataOutput, Close, DataSeries, Element, ChartProperties } from '../shared/stockmarket.model';
 
 @Component({
@@ -13,11 +13,13 @@ export class HomeComponent {
   marketTodayChartattributes: ChartProperties;
   marketTodayChartData: MarketDataOutput;
   marketIndices: MarketIndice[];
-  nasdaqIndex = MarketIndice;
+  nasdaqIndex: MarketIndice;
+  bullionData: Array<Bullion>;
 
   constructor(private service: StockmarketService) {
     this.getStockMarketUpdates();
     this.getMarketIndices();
+    this.getBullionMarketData()
   }
 
   getStockMarketUpdates() {
@@ -34,12 +36,41 @@ export class HomeComponent {
 
   populateMarketIndices(data: StockMarket) {
     this.marketIndices = data.d.marketIndices;
+    this.nasdaqIndex = this.marketIndices.find(i => i.Symbol === '0NDQC');
+  }
 
-    for (let i = 0; i < this.marketIndices.length; i++) {
-      if (this.marketIndices[i].Symbol == '0NDQC') {
-        this.nasdaqIndex.prototype = this.marketIndices[i];
-        return;
+  getBullionMarketData() {
+    this.service.getBullionMarketData().subscribe(r => this.populateBullionData(r), err => console.log("getBullionMarketData", err));
+  }
+
+  populateBullionData(data: any) {
+    if (data == null || data == undefined) return;
+
+    let values = data.replace('\n').split(' ');
+    let bullions = new Array<Bullion>();
+
+    for (let i = 0; i <= values.length - 1; i++) {
+      if (i == 0 || i == 3 || i == 6 || i == 9) {
+        bullions.push(new Bullion(this.resolveSymbol(values[i].trim().substr(0, 3))));
+        bullions[bullions.length - 1].prices.push(values[i].trim().substr(4));
       }
+      else {
+        bullions[bullions.length - 1].prices.push(values[i].trim().substr(1));
+      }
+      if (i >= 11) { this.bullionData = bullions; return };
+    }
+  }
+
+  resolveSymbol(symbol: string):string {
+    switch(symbol) {
+      case "XAU":
+        return "GOLD"
+      case "XAG":
+        return "SILVER"
+      case "XPT":
+        return "PLATINUM"
+      default:
+        return "PALLADIUM"
     }
   }
 }

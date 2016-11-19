@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
+import { FormsModule }    from '@angular/forms';
+
 import { MarketsComponent } from './markets.component';
+import { TrendingComponent } from './trending/trending.component';
+import { StocksOnMoveComponent } from './stocksonmove/stocksonmove.component';
+import { MarketsRoutingModule } from './markets-routing.module';
 
 @NgModule({
   imports: [
-    BrowserModule, RouterModule
+    FormsModule,
+    MarketsRoutingModule
   ],
+
   declarations: [
-    MarketsComponent
+    MarketsComponent, TrendingComponent, StocksOnMoveComponent
   ],
-  exports: [ MarketsComponent ],
-  bootstrap: [ MarketsComponent ]
+  bootstrap: [ MarketsComponent, TrendingComponent, StocksOnMoveComponent ]
 })
 export class MarketsModule { }

@@ -311,3 +311,7 @@ public class RootObject
     
     return input;
   }
+
+  "http://myibd.investors.com/search/searchresults.aspx?Nr=AND(IBD Stock Flag:1,Content Type:Articles,NOT(Source:CMS))&Ns=createdDate_unixts&Module=InTheNews
+
+  

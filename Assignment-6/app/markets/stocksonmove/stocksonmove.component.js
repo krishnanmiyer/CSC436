@@ -9,17 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var MarketsComponent = (function () {
-    function MarketsComponent() {
+var StocksOnMoveComponent = (function () {
+    function StocksOnMoveComponent() {
     }
-    MarketsComponent = __decorate([
+    StocksOnMoveComponent = __decorate([
         core_1.Component({
-            selector: 'markets',
-            templateUrl: 'app/markets/markets.component.html',
+            selector: 'stocksonmove',
+            template: "<h1>Stocks on the move</h1>",
         }), 
         __metadata('design:paramtypes', [])
-    ], MarketsComponent);
-    return MarketsComponent;
+    ], StocksOnMoveComponent);
+    return StocksOnMoveComponent;
 }());
-exports.MarketsComponent = MarketsComponent;
-//# sourceMappingURL=markets.component.js.map
+exports.StocksOnMoveComponent = StocksOnMoveComponent;
+//# sourceMappingURL=stocksonmove.component.js.map

@@ -116,3 +116,15 @@ export class MarketIndice
     Flag: string;
     ChartUrl: string;
 }
+
+export class Bullion
+{
+    symbol: string;
+    prices: string[];
+
+    constructor( sym: string) {
+        this.symbol = sym;
+        this.prices = new Array<string>();
+    }
+
+}

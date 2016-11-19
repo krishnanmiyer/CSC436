@@ -1,47 +1,102 @@
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-xs-12 col-md-8">
+		<div class="col-xs-9 col-md-6">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Business News</h3>
 				</div>
 				<div class="panel-body">
 					<div class="list-group-item" *ngFor="let item of marketUpdates">
-						<h4 class="list-group-item-heading"><a href="{{item.Url}}">{{item.Title}}</a></h4>
+						<h4 class="list-group-item-heading"><a href="{{item.Url}}" onclick="window.open(this.href); return false;">{{item.Title}}</a></h4>
 						<!--<div [innerHTML]="item.Summary"></div>-->
 						<p class="list-group-item-text">Source: {{item.Publisher}} - {{item.PublishDate}}</p>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-6 col-md-4">
+		<div class="col-xs-9 col-md-6">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">Market Today</h3>
+					<h3 class="panel-title">Markets Today</h3>
 				</div>
 				<div class="panel-body">
-					<div class="row">
-						<table class="table">
-							<tr *ngFor="let market of marketIndices">
-								<td>{{market.IndexName}} </td>
-								<td>{{market.IndexValue | number:'1.2-2'}} </td>
-								<td>
-									<div [ngClass]="{'text-success': market.IndexValuePctChange > 0, 'text-danger': market.IndexValuePctChange < 0}">
-										<span [ngClass]="{'glyphicon glyphicon-arrow-up': market.IndexValuePctChange > 0, 'glyphicon glyphicon-arrow-down': market.IndexValuePctChange < 0}"
-											aria-hidden="true"></span> {{market.IndexValuePctChange |number : '1.2-2'}}%
-									</div>
-								</td>
-								<td>
-									<div [ngClass]="{'text-success': market.IndexValuePctChange > 0, 'text-danger': market.IndexValuePctChange < 0}">
-										<span [ngClass]="{'glyphicon glyphicon-arrow-up': market.IndexValuePctChange > 0, 'glyphicon glyphicon-arrow-down': market.IndexValuePctChange < 0}"
-											aria-hidden="true"></span> {{market.IndexValueChange| number:'1.2-2'}}
-									</div>
-								</td>
+					<table class="table-condensed">
+						<tr>
+							<td>
+								<table class="table table-nonfluid">
+									<tr *ngFor="let market of marketIndices">
+										<td><a href="{{market.ChartUrl}}" onclick="window.open(this.href); return false;">{{market.IndexName}}</a></td>
+										<td>{{market.IndexValue | number:'1.2-2'}} </td>
+										<td>
+											<div [ngClass]="{'text-success': market.IndexValuePctChange > 0, 'text-danger': market.IndexValuePctChange < 0}">
+												<span [ngClass]="{'glyphicon glyphicon-arrow-up': market.IndexValuePctChange > 0, 'glyphicon glyphicon-arrow-down': market.IndexValuePctChange < 0}"
+													aria-hidden="true"></span> {{market.IndexValuePctChange |number : '1.2-2'}}%
+											</div>
+										</td>
+										<td>
+											<div [ngClass]="{'text-success': market.IndexValuePctChange > 0, 'text-danger': market.IndexValuePctChange < 0}">
+												<span [ngClass]="{'glyphicon glyphicon-arrow-up': market.IndexValuePctChange > 0, 'glyphicon glyphicon-arrow-down': market.IndexValuePctChange < 0}"
+													aria-hidden="true"></span> {{market.IndexValueChange| number:'1.2-2'}}
+											</div>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td valign='top'>
+								<iframe width="120" height="105" src="http://research.investors.com/stockresearch/scripts/minichart/minichartframe.htm?symbol=0NDQC&amp;type=daily&amp;simple=true"
+									frameborder="0" scrolling="no" allowtransparency="true" style="margin-right:5%;"></iframe>
+							</td>
+							<td *ngIf="nasdaqIndex != null || nasdaqIndex != undefined" valign='top'>
+								<table cellspacing=2>
+									<tr>
+										<td colspan=2 valign='top'>
+											<h4>{{nasdaqIndex.IndexAbbr}}</h4>
+										</td>
+									</tr>
+									<tr>
+										<td colspan=2 valign='top'> 
+											<h3>{{nasdaqIndex.IndexValue | number:'1.2-2'}}</h3>
+										</td>
+									</tr>
+									<tr>
+										<td [ngClass]="{'text-success': nasdaqIndex.IndexValuePctChange > 0, 'text-danger': nasdaqIndex.IndexValuePctChange < 0}">
+											<span [ngClass]="{'glyphicon glyphicon-arrow-up': nasdaqIndex.IndexValuePctChange > 0, 'glyphicon glyphicon-arrow-down': nasdaqIndex.IndexValuePctChange < 0}"
+												aria-hidden="true"></span> {{nasdaqIndex.IndexValuePctChange |number : '1.2-2'}}%</td>
+										<td [ngClass]="{'text-success': nasdaqIndex.IndexValuePctChange > 0, 'text-danger': nasdaqIndex.IndexValuePctChange < 0}">
+											<span [ngClass]="{'glyphicon glyphicon-arrow-up': nasdaqIndex.IndexValuePctChange > 0, 'glyphicon glyphicon-arrow-down': nasdaqIndex.IndexValuePctChange < 0}"
+												aria-hidden="true"></span> {{nasdaqIndex.IndexValueChange| number:'1.2-2'}}</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Bullion Market</h3>
+				</div>
+				<div class="panel-body">
+					<div *ngIf="(bullionData != null && bullionData != undefined && bullionData.length > 0)">
+						<table class="table table-responsive"> 
+							<tr>
+								<th></th>							
+								<th>Bid</th>							
+								<th>Ask</th>							
+								<th>+/-</th>							
+							</tr>
+							<tr *ngFor="let item of bullionData">
+								<th>{{item.symbol}}</th>
+								<td>{{item.prices[0]}}</td>
+								<td>{{item.prices[1]}}</td>
+								<td>{{item.prices[2]}}</td>
 							</tr>
 						</table>
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</div>
 </div>

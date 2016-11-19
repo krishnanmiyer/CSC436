@@ -14,9 +14,9 @@ var stockmarket_model_1 = require('../shared/stockmarket.model');
 var HomeComponent = (function () {
     function HomeComponent(service) {
         this.service = service;
-        this.nasdaqIndex = stockmarket_model_1.MarketIndice;
         this.getStockMarketUpdates();
         this.getMarketIndices();
+        this.getBullionMarketData();
     }
     HomeComponent.prototype.getStockMarketUpdates = function () {
         var _this = this;
@@ -31,11 +31,42 @@ var HomeComponent = (function () {
     };
     HomeComponent.prototype.populateMarketIndices = function (data) {
         this.marketIndices = data.d.marketIndices;
-        for (var i = 0; i < this.marketIndices.length; i++) {
-            if (this.marketIndices[i].Symbol == '0NDQC') {
-                this.nasdaqIndex.prototype = this.marketIndices[i];
+        this.nasdaqIndex = this.marketIndices.find(function (i) { return i.Symbol === '0NDQC'; });
+    };
+    HomeComponent.prototype.getBullionMarketData = function () {
+        var _this = this;
+        this.service.getBullionMarketData().subscribe(function (r) { return _this.populateBullionData(r); }, function (err) { return console.log("getBullionMarketData", err); });
+    };
+    HomeComponent.prototype.populateBullionData = function (data) {
+        if (data == null || data == undefined)
+            return;
+        var values = data.replace('\n').split(' ');
+        var bullions = new Array();
+        for (var i = 0; i <= values.length - 1; i++) {
+            if (i == 0 || i == 3 || i == 6 || i == 9) {
+                bullions.push(new stockmarket_model_1.Bullion(this.resolveSymbol(values[i].trim().substr(0, 3))));
+                bullions[bullions.length - 1].prices.push(values[i].trim().substr(4));
+            }
+            else {
+                bullions[bullions.length - 1].prices.push(values[i].trim().substr(1));
+            }
+            if (i >= 11) {
+                this.bullionData = bullions;
                 return;
             }
+            ;
+        }
+    };
+    HomeComponent.prototype.resolveSymbol = function (symbol) {
+        switch (symbol) {
+            case "XAU":
+                return "GOLD";
+            case "XAG":
+                return "SILVER";
+            case "XPT":
+                return "PLATINUM";
+            default:
+                return "PALLADIUM";
         }
     };
     HomeComponent = __decorate([

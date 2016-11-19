@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { StockmarketService } from '../shared/stockmarket.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -15,51 +15,65 @@ import 'rxjs/add/operator/distinctuntilchanged';
   styleUrls: ['app/quote/quote.component.css'],
 })
 
-export class StockQuoteComponent {
+export class StockQuoteComponent implements OnInit {
   items: any;
   stockQuote: any;
-  symbol: string;
+  symbol: string = "";
   term$ = new Subject<string>();
   chartattributes: ChartProperties;
   chartData: ChartDataOutput;
   news: any;
 
-  constructor(private service: StockmarketService) {
+  constructor(private service: StockmarketService, private route: ActivatedRoute) {
     this.term$
       .debounceTime(500)
       .distinctUntilChanged()
       .subscribe(term => this.search(term));
-
     this.initializeChart();
   }
 
-  search(term: string) {
+  ngOnInit() {
+    this.route.params.subscribe(params => { this.validateSymbol(params['sym'] || '') });
+  }
+
+  search(term: string): void {
     if (term.length < 1) {
       this.items.length = 0;
       return;
     }
-    this.service.getStockSymbol(term).subscribe(result => this.items = result, err => console.log("search Symbol: ", err));
+    this.service.getStockSymbol(term).subscribe((result: any) => this.items = result, err => console.log("search Symbol: ", err));
   }
 
-  quote(symbol: string) {
+  validateSymbol(term: string): void {
+    if (term == '') return;
+    term = term.trim().toUpperCase();
+    this.service.getStockSymbol(term).subscribe((result: any) => this.renderResults(term, result), err => console.log("search Symbol: ", err));
+  }
+
+  renderResults(term: string, res: any): void {
+    if (res.length <= 0) return;
+    this.symbol = res[0].Symbol;
+    this.quote(this.symbol);
+    this.getChartData(this.symbol);
+  }
+
+  quote(symbol: string): void {
     this.symbol = symbol;
-    this.items.length = 0;
-
-    this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(r => this.stockQuote = r, err => console.log("quote: ", err));
+    if (this.items) this.items.length = 0;
+    this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe((result: any) => this.stockQuote = result, err => console.log("quote: ", err));
   }
 
-  getCompanyNews(symbol: string) {
+  getCompanyNews(symbol: string): void {
     this.news = undefined;
-    this.service.getCompanyNews(symbol).subscribe(r => this.news = r, err => console.log("getCompanyNews: ", err));
-    console.log(this.news);
+    this.service.getCompanyNews(symbol).subscribe((result: any) => this.news = result, err => console.log("getCompanyNews: ", err));
   }
 
-  getChartData(symbol: string) {
+  getChartData(symbol: string): void {
     this.chartattributes.datasets = undefined;
-    this.service.getInteractiveChart(symbol).subscribe(r => this.populateChart(r), err => console.log("getChartData: ", err));
+    this.service.getInteractiveChart(symbol).subscribe((result: any) => this.populateChart(result), err => console.log("getChartData: ", err));
   }
 
-  populateChart(data: ChartDataOutput) {
+  populateChart(data: ChartDataOutput): void {
     this.chartData = data;
 
     //initialize chart for redraw

@@ -9,17 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var MarketsComponent = (function () {
-    function MarketsComponent() {
+var TrendingComponent = (function () {
+    function TrendingComponent() {
     }
-    MarketsComponent = __decorate([
+    TrendingComponent = __decorate([
         core_1.Component({
-            selector: 'markets',
-            templateUrl: 'app/markets/markets.component.html',
+            selector: 'trending',
+            template: "<h1>Trending Stocks</h1>",
         }), 
         __metadata('design:paramtypes', [])
-    ], MarketsComponent);
-    return MarketsComponent;
+    ], TrendingComponent);
+    return TrendingComponent;
 }());
-exports.MarketsComponent = MarketsComponent;
-//# sourceMappingURL=markets.component.js.map
+exports.TrendingComponent = TrendingComponent;
+//# sourceMappingURL=trending.component.js.map

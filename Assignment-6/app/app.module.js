@@ -8,24 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+//ng modules
 var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
-var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
 var http_1 = require('@angular/http');
+//app modules
+var app_routing_module_1 = require('./app-routing.module');
 var home_module_1 = require('./home/home.module');
 var quote_module_1 = require('./quote/quote.module');
 var markets_module_1 = require('./markets/markets.module');
+//app components
 var app_component_1 = require('./app.component');
-var home_component_1 = require('./home/home.component');
-var quote_component_1 = require('./quote/quote.component');
-var markets_component_1 = require('./markets/markets.component');
-var routes = [{ path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'home', component: home_component_1.HomeComponent },
-    { path: 'quote', component: quote_component_1.StockQuoteComponent },
-    { path: 'markets', component: markets_component_1.MarketsComponent }
-];
 var AppModule = (function () {
     function AppModule() {
     }
@@ -35,7 +30,7 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
-                router_1.RouterModule.forRoot(routes),
+                app_routing_module_1.AppRoutingModule,
                 home_module_1.HomeModule,
                 quote_module_1.QuoteModule,
                 markets_module_1.MarketsModule

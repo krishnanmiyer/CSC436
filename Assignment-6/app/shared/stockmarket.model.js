@@ -92,4 +92,12 @@ var MarketIndice = (function () {
     return MarketIndice;
 }());
 exports.MarketIndice = MarketIndice;
+var Bullion = (function () {
+    function Bullion(sym) {
+        this.symbol = sym;
+        this.prices = new Array();
+    }
+    return Bullion;
+}());
+exports.Bullion = Bullion;
 //# sourceMappingURL=stockmarket.model.js.map

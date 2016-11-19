@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Jsonp, URLSearchParams, Headers, Http } from '@angular/http';
+import { Jsonp, URLSearchParams, Headers, Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { ChartDataInput, ChartDataOutput, Close, DataSeries, Element } from './stockmarket.model';
 
@@ -71,11 +71,11 @@ export class StockmarketService {
     const todayUrl = 'http://research.investors.com/services/ChartService.svc/GetData'
 
     let headers = new Headers();
-    headers.append('Content-Type','application/json');
-    headers.append('Access-Control-Allow-Credentials','true');
-    headers.append('Access-Control-Allow-Origin','*');
+    headers.append('Content-Type', 'application/json');
+    headers.append('Access-Control-Allow-Credentials', 'true');
+    headers.append('Access-Control-Allow-Origin', '*');
 
-    return this.http.post(todayUrl, input , { headers: headers}).map(r => r.json());
+    return this.http.post(todayUrl, input, { headers: headers }).map(r => r.json());
   }
 
   getMarketIndices() {
@@ -85,6 +85,44 @@ export class StockmarketService {
     params.set('callback', 'JSONP_CALLBACK');
     return this.jsonp.get(indicesUrl, { search: params }).map(r => r.json());
   }
+
+  getBullionMarketData() {
+    let params: string = [
+      `sym=XAU!XAG!XPT!XPD`,
+      `fld=B!A!CH`,
+      `zz=319897461801`,
+      `ts=${this.getFormattedDate()}`
+    ].join('&');
+
+    let queryUrl: string = `https://www.bulliondesk.com/fmdatacache/?${params}`;
+
+    let headers = new Headers();
+    headers.append('Access-Control-Allow-Origin', '*');
+    headers.append('Access-Control-Allow-Credentials', 'false');
+    headers.append('Access-Control-Allow-Methods', 'GET');
+    
+    let options = new RequestOptions({
+      method: RequestMethod.Get,
+      headers: headers
+    })
+
+    return this.http.request(queryUrl, options).map(r => r.text());
+  }
+
+  getMonth(dateIn: number): string {
+    const monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    let input = new Date(dateIn);
+    return monthNames[input.getMonth()];
+  }
+
+  getFormattedDate(): string {
+    let d = new Date();
+    let formatted = d.getDate() - 1 + '-' + this.getMonth(d.getMonth()) + '-' + d.getFullYear() + ' 06:30:00';
+    return formatted;
+  }
+
+
 }
 
 

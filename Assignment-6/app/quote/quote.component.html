@@ -2,18 +2,16 @@
 	<div class="row">
 		<div class="col-md-4 col-xs-4">
 			<div class="row">
-				<div class="well">
-					<div class="container">
-						<form class="form-inline">
-							<div class="form-group">
-								<label for="stockSymbol">Try Stock Name or Symbol ("Apple" or "AAPL")</label>
-								<input (input)="term$.next($event.target.value)" class="form-control" id="stockSymbol" name="stockSymbol" value={{symbol}}>
-								<ul class="list-group" [hidden]="items == null || items.length < 1" id="stockList">
-									<li class="list-group-item" *ngFor="let item of items"><a (click)="quote(item.Symbol);getChartData(item.Symbol);">{{item.Name}} ({{item.Exchange}})</a></li>
-								</ul>
-							</div>
-						</form>
-					</div>
+				<div class="container">
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="stockSymbol">Try Stock Name or Symbol ("Apple" or "AAPL")</label>
+							<input (input)="term$.next($event.target.value)" class="form-control" id="stockSymbol" name="stockSymbol" value={{symbol}}>
+							<ul class="list-group" [hidden]="items == null || items.length < 1" id="stockList">
+								<li class="list-group-item" *ngFor="let item of items"><a (click)="quote(item.Symbol);getChartData(item.Symbol);">{{item.Name}} ({{item.Exchange}})</a></li>
+							</ul>
+						</div>
+					</form>
 				</div>
 			</div>
 
@@ -72,36 +70,25 @@
 							<table class="table table-condensed">
 								<tbody>
 									<tr>
-										<th>minimum - {{getDate(chartData.Elements[0].DataSeries.close.minDate)}}</th>
+										<th>Minimum - ({{getDate(chartData.Elements[0].DataSeries.close.minDate)}})</th>
 										<td>${{chartData.Elements[0].DataSeries.close.min}}</td>
 									</tr>
 									<tr>
-										<th>maximum - {{getDate(chartData.Elements[0].DataSeries.close.maxDate)}}</th>
+										<th>Maximum - ({{getDate(chartData.Elements[0].DataSeries.close.maxDate)}})</th>
 										<td>${{chartData.Elements[0].DataSeries.close.max}}</td>
 									</tr>
+									<tr *ngIf="stockQuote != null || stockQuote != undefined">
+										<th>Market Cap</th>
+										<td>{{stockQuote.MarketCap | currency:'USD':true:'1.2-2'}}</td>
+									</tr>			
+									<tr *ngIf="stockQuote != null || stockQuote != undefined">
+										<th>Volume</th>
+										<td>{{stockQuote.Volume | currency:'USD':true:'1.2-2'}}</td>
+									</tr>															
 								</tbody>
 							</table>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="well well-lg" *ngIf="stockQuote != null || stockQuote != undefined">
-				<div class="table-responsive">
-					<h3>Capitalization</h3>
-					<table class="table table-bordered">
-						<thead>
-							<tr class="active">
-								<th>Market Cap</th>
-								<th>Volume</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>{{stockQuote.MarketCap | currency:'USD':true:'1.2-2'}}</td>
-								<td>{{stockQuote.Volume | currency:'USD':true:'1.2-2'}}</td>
-							</tr>
-						</tbody>
-					</table>
 				</div>
 			</div>
 		</div>

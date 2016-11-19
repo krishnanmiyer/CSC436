@@ -77,6 +77,34 @@ var StockmarketService = (function () {
         params.set('callback', 'JSONP_CALLBACK');
         return this.jsonp.get(indicesUrl, { search: params }).map(function (r) { return r.json(); });
     };
+    StockmarketService.prototype.getBullionMarketData = function () {
+        var params = [
+            "sym=XAU!XAG!XPT!XPD",
+            "fld=B!A!CH",
+            "zz=319897461801",
+            ("ts=" + this.getFormattedDate())
+        ].join('&');
+        var queryUrl = "https://www.bulliondesk.com/fmdatacache/?" + params;
+        var headers = new http_1.Headers();
+        headers.append('Access-Control-Allow-Origin', '*');
+        headers.append('Access-Control-Allow-Credentials', 'false');
+        headers.append('Access-Control-Allow-Methods', 'GET');
+        var options = new http_1.RequestOptions({
+            method: http_1.RequestMethod.Get,
+            headers: headers
+        });
+        return this.http.request(queryUrl, options).map(function (r) { return r.text(); });
+    };
+    StockmarketService.prototype.getMonth = function (dateIn) {
+        var monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var input = new Date(dateIn);
+        return monthNames[input.getMonth()];
+    };
+    StockmarketService.prototype.getFormattedDate = function () {
+        var d = new Date();
+        var formatted = d.getDate() - 1 + '-' + this.getMonth(d.getMonth()) + '-' + d.getFullYear() + ' 06:30:00';
+        return formatted;
+    };
     StockmarketService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Jsonp, http_1.Http])

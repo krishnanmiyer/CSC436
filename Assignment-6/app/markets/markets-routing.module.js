@@ -9,28 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var forms_1 = require('@angular/forms');
-var markets_component_1 = require('./markets.component');
-var trending_component_1 = require('./trending/trending.component');
+var router_1 = require('@angular/router');
 var stocksonmove_component_1 = require('./stocksonmove/stocksonmove.component');
-var markets_routing_module_1 = require('./markets-routing.module');
-var MarketsModule = (function () {
-    function MarketsModule() {
+var trending_component_1 = require('./trending/trending.component');
+var marketsRoutes = [
+    { path: 'trending', component: trending_component_1.TrendingComponent },
+    { path: 'stocksonmove', component: stocksonmove_component_1.StocksOnMoveComponent }
+];
+var MarketsRoutingModule = (function () {
+    function MarketsRoutingModule() {
     }
-    MarketsModule = __decorate([
+    MarketsRoutingModule = __decorate([
         core_1.NgModule({
             imports: [
-                forms_1.FormsModule,
-                markets_routing_module_1.MarketsRoutingModule
+                router_1.RouterModule.forChild(marketsRoutes)
             ],
-            declarations: [
-                markets_component_1.MarketsComponent, trending_component_1.TrendingComponent, stocksonmove_component_1.StocksOnMoveComponent
-            ],
-            bootstrap: [markets_component_1.MarketsComponent, trending_component_1.TrendingComponent, stocksonmove_component_1.StocksOnMoveComponent]
+            exports: [
+                router_1.RouterModule
+            ]
         }), 
         __metadata('design:paramtypes', [])
-    ], MarketsModule);
-    return MarketsModule;
+    ], MarketsRoutingModule);
+    return MarketsRoutingModule;
 }());
-exports.MarketsModule = MarketsModule;
-//# sourceMappingURL=markets.module.js.map
+exports.MarketsRoutingModule = MarketsRoutingModule;
+//# sourceMappingURL=markets-routing.module.js.map

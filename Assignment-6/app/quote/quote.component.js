@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var stockmarket_service_1 = require('../shared/stockmarket.service');
 var Subject_1 = require('rxjs/Subject');
 var stockmarket_model_1 = require('../shared/stockmarket.model');
@@ -16,9 +17,11 @@ require('rxjs/add/operator/map');
 require('rxjs/add/operator/debounceTime');
 require('rxjs/add/operator/distinctuntilchanged');
 var StockQuoteComponent = (function () {
-    function StockQuoteComponent(service) {
+    function StockQuoteComponent(service, route) {
         var _this = this;
         this.service = service;
+        this.route = route;
+        this.symbol = "";
         this.term$ = new Subject_1.Subject();
         this.term$
             .debounceTime(500)
@@ -26,6 +29,10 @@ var StockQuoteComponent = (function () {
             .subscribe(function (term) { return _this.search(term); });
         this.initializeChart();
     }
+    StockQuoteComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) { _this.validateSymbol(params['sym'] || ''); });
+    };
     StockQuoteComponent.prototype.search = function (term) {
         var _this = this;
         if (term.length < 1) {
@@ -34,22 +41,36 @@ var StockQuoteComponent = (function () {
         }
         this.service.getStockSymbol(term).subscribe(function (result) { return _this.items = result; }, function (err) { return console.log("search Symbol: ", err); });
     };
+    StockQuoteComponent.prototype.validateSymbol = function (term) {
+        var _this = this;
+        if (term == '')
+            return;
+        term = term.trim().toUpperCase();
+        this.service.getStockSymbol(term).subscribe(function (result) { return _this.renderResults(term, result); }, function (err) { return console.log("search Symbol: ", err); });
+    };
+    StockQuoteComponent.prototype.renderResults = function (term, res) {
+        if (res.length <= 0)
+            return;
+        this.symbol = res[0].Symbol;
+        this.quote(this.symbol);
+        this.getChartData(this.symbol);
+    };
     StockQuoteComponent.prototype.quote = function (symbol) {
         var _this = this;
         this.symbol = symbol;
-        this.items.length = 0;
-        this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(function (r) { return _this.stockQuote = r; }, function (err) { return console.log("quote: ", err); });
+        if (this.items)
+            this.items.length = 0;
+        this.service.getStockQuote(symbol).distinctUntilChanged().debounceTime(500).subscribe(function (result) { return _this.stockQuote = result; }, function (err) { return console.log("quote: ", err); });
     };
     StockQuoteComponent.prototype.getCompanyNews = function (symbol) {
         var _this = this;
         this.news = undefined;
-        this.service.getCompanyNews(symbol).subscribe(function (r) { return _this.news = r; }, function (err) { return console.log("getCompanyNews: ", err); });
-        console.log(this.news);
+        this.service.getCompanyNews(symbol).subscribe(function (result) { return _this.news = result; }, function (err) { return console.log("getCompanyNews: ", err); });
     };
     StockQuoteComponent.prototype.getChartData = function (symbol) {
         var _this = this;
         this.chartattributes.datasets = undefined;
-        this.service.getInteractiveChart(symbol).subscribe(function (r) { return _this.populateChart(r); }, function (err) { return console.log("getChartData: ", err); });
+        this.service.getInteractiveChart(symbol).subscribe(function (result) { return _this.populateChart(result); }, function (err) { return console.log("getChartData: ", err); });
     };
     StockQuoteComponent.prototype.populateChart = function (data) {
         this.chartData = data;
@@ -110,7 +131,7 @@ var StockQuoteComponent = (function () {
             templateUrl: 'app/quote/quote.component.html',
             styleUrls: ['app/quote/quote.component.css'],
         }), 
-        __metadata('design:paramtypes', [stockmarket_service_1.StockmarketService])
+        __metadata('design:paramtypes', [stockmarket_service_1.StockmarketService, router_1.ActivatedRoute])
     ], StockQuoteComponent);
     return StockQuoteComponent;
 }());
