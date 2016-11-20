@@ -4,9 +4,11 @@
 // =============================================================================
 
 // call the packages we need
+var http = require('http');
 var express = require('express');        // call express
 var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
+var server = http.createServer(app);
 
 //Configure db
 var sql = require('mssql');
@@ -116,5 +118,7 @@ router.use(function (req, res, next) {
 
 // START THE SERVER
 // =============================================================================
-app.listen(port);
-console.log('Magic happens on port ' + port);
+//app.listen(port);
+//console.log('Magic happens on port ' + port);
+server.listen(port, function () { // fifth and final change
+});
