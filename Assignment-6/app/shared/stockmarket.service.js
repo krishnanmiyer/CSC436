@@ -69,7 +69,8 @@ var StockmarketService = (function () {
         headers.append('Content-Type', 'application/json');
         headers.append('Access-Control-Allow-Credentials', 'true');
         headers.append('Access-Control-Allow-Origin', '*');
-        return this.http.post(todayUrl, input, { headers: headers }).map(function (r) { return r.json(); });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(todayUrl, input, options).map(function (r) { return r; });
     };
     StockmarketService.prototype.getMarketIndices = function () {
         var indicesUrl = 'http://research.investors.com/Services/JSONPService.asmx/GetMarketIndices';
@@ -104,6 +105,13 @@ var StockmarketService = (function () {
         var d = new Date();
         var formatted = d.getDate() - 1 + '-' + this.getMonth(d.getMonth()) + '-' + d.getFullYear() + ' 06:30:00';
         return formatted;
+    };
+    StockmarketService.prototype.getStocksOnMove = function () {
+        var queryUrl = 'http://research.investors.com/services/JSONPService.asmx/GetNumOfStocksOnTheMoveData';
+        var params = new http_1.URLSearchParams();
+        params.set('callback', 'JSONP_CALLBACK');
+        params.set('maxNumOfStocksPerList', '20');
+        return this.jsonp.get(queryUrl, { search: params }).map(function (r) { return r.json(); });
     };
     StockmarketService = __decorate([
         core_1.Injectable(), 

@@ -9,15 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var stockmarket_service_1 = require('../../shared/stockmarket.service');
 var StocksOnMoveComponent = (function () {
-    function StocksOnMoveComponent() {
+    function StocksOnMoveComponent(service) {
+        this.service = service;
+        this.getStocksOnMove();
     }
+    StocksOnMoveComponent.prototype.getStocksOnMove = function () {
+        var _this = this;
+        this.service.getStocksOnMove().subscribe(function (r) { return _this.populatestocks(r); }, function (err) { return console.log("getStocksOnMove: ", err); });
+    };
+    StocksOnMoveComponent.prototype.populatestocks = function (data) {
+        console.log("data -->", data);
+        this.upstocks = data.d.sotm.UpStocks;
+        this.downstocks = data.d.sotm.DownStocks;
+        console.log("up -->", this.upstocks);
+        console.log("down -->", this.downstocks);
+    };
     StocksOnMoveComponent = __decorate([
         core_1.Component({
             selector: 'stocksonmove',
-            template: "<h1>Stocks on the move</h1>",
+            templateUrl: 'app/markets/stocksonmove/stocksonmove.component.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [stockmarket_service_1.StockmarketService])
     ], StocksOnMoveComponent);
     return StocksOnMoveComponent;
 }());

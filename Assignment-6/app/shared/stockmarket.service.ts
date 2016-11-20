@@ -68,14 +68,15 @@ export class StockmarketService {
   }
 
   getMarketToday(input: string) {
-    const todayUrl = 'http://research.investors.com/services/ChartService.svc/GetData'
+    const todayUrl = 'http://research.investors.com/services/ChartService.svc/GetData';
 
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Access-Control-Allow-Credentials', 'true');
     headers.append('Access-Control-Allow-Origin', '*');
 
-    return this.http.post(todayUrl, input, { headers: headers }).map(r => r.json());
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(todayUrl, input, options).map(r => r);
   }
 
   getMarketIndices() {
@@ -100,7 +101,7 @@ export class StockmarketService {
     headers.append('Access-Control-Allow-Origin', '*');
     headers.append('Access-Control-Allow-Credentials', 'false');
     headers.append('Access-Control-Allow-Methods', 'GET');
-    
+
     let options = new RequestOptions({
       method: RequestMethod.Get,
       headers: headers
@@ -122,7 +123,14 @@ export class StockmarketService {
     return formatted;
   }
 
+  getStocksOnMove() {
+    const queryUrl = 'http://research.investors.com/services/JSONPService.asmx/GetNumOfStocksOnTheMoveData';
 
+    let params = new URLSearchParams();
+    params.set('callback', 'JSONP_CALLBACK');
+    params.set('maxNumOfStocksPerList', '20');
+    return this.jsonp.get(queryUrl, { search: params }).map(r => r.json());
+  }
 }
 
 

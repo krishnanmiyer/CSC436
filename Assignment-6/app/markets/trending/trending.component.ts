@@ -2,7 +2,7 @@ import { Component} from '@angular/core';
 
 @Component({
   selector: 'trending',
-  template: `<h1>Trending Stocks</h1>`,
+  templateUrl: 'app/markets/trending/trending.component.html',
 })
 
 export class TrendingComponent { }

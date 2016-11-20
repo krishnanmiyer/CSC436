@@ -15,7 +15,7 @@ var TrendingComponent = (function () {
     TrendingComponent = __decorate([
         core_1.Component({
             selector: 'trending',
-            template: "<h1>Trending Stocks</h1>",
+            templateUrl: 'app/markets/trending/trending.component.html',
         }), 
         __metadata('design:paramtypes', [])
     ], TrendingComponent);
